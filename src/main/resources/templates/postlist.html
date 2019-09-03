@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Postlist</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css"rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+    <style type="text/css">
+    
+    .container{
+    color: red;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid red;
+    }
+    .replycontainer{
+    color: black;
+    background-color: gray;
+    border-radius: 10px;
+    border: 2px solid black;
+    width: 1140px;
+    margin: 0 auto;
+    }
+    .info{
+    color: white;
+    font-family: Helvetica;
+    }
+    .replyinfo{
+    color: white;
+    font-family: Helvetica;
+    }
+    .user{
+    color: white;
+    font-family: Helvetica;
+    }
+    .replyuser{
+    color: white;
+    font-family: Helvetica;
+    }
+    .text{
+    word-wrap: break-word;
+   	width: 100%;
+    }
+    .bubble{
+    position: relative;
+    background-color: #aeaaa2;
+    padding: 20px;
+    border-radius: 5px;
+    margin-left: 40px;
+    border: 1px solid black;
+    }
+    .bubble::after{
+    content: "";
+    display: block;
+    position: absolute;
+    left:-19px;
+    top:14px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 20px solid #aeaaa2;
+    }
+    
+    .bubble::before{
+    content: "";
+    display: block;
+    position: absolute;
+    left:-20px;
+    top:15px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 20px solid black;
+    }
+    </style>
+</head>
+<body>
+	<h1>Posts</h1>
+	<a class="btn btn-success btn-sm" href="/addpost">Add Post</a> 
+    
+    	<tr th:each = "post : ${posts}">
+    		<div class="container">
+    		<div class="info">
+    		<th th:text="${post.time}"></th>
+    		<th th:text="${post.date}"></th>
+    		
+    		
+    		
+    		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
+ 			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
+    		</div>
+    		<div>
+    		<th class="user" th:text="${post.firstName}" ></th>
+    		<th class="user" th:text="${post.lastName}"></th>
+    		</div>
+    		<p class="text" th:text="${post.email}"></p>
+ 			</div>
+ 			<div style="clear: both; display: block; height: 5px;"></div>
+ 			
+    	</tr>   	
+</body>
+</html>
