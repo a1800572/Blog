@@ -78,6 +78,7 @@
 <body>
 	<h1>Posts</h1>
 	<a class="btn btn-success btn-sm" href="/addpost">Add Post</a> 
+    <a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a> 
     
     	<tr th:each = "post : ${posts}">
     		<div class="container">
@@ -89,12 +90,21 @@
     		
     		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
+ 			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">add tag to post</a>
     		</div>
     		<div>
     		<th class="user" th:text="${post.firstName}" ></th>
     		<th class="user" th:text="${post.lastName}"></th>
     		</div>
     		<p class="text" th:text="${post.email}"></p>
+    		
+    		
+    		<span th:each="tag,iterStat : ${post.tags}">
+    		<a class="btn btn-success btn-sm">
+			<span th:text="${tag.name}"/>
+			</a>
+			</span>
+			
  			</div>
  			<div style="clear: both; display: block; height: 5px;"></div>
  			

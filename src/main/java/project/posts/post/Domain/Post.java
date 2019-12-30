@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -38,6 +40,20 @@ public class Post {
     @JoinColumn(name="id")
     private List<Comment> comments = new ArrayList<>();
     
+    
+    
+    
+    
+    
+    @ManyToMany(cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	    @JoinTable(name = "post_tag",
+	        joinColumns = @JoinColumn(name = "id"),
+	        inverseJoinColumns = @JoinColumn(name = "tagid")
+	    )
+	    private List<Tag> tags = new ArrayList<>();
     
     
     
@@ -113,6 +129,16 @@ public class Post {
 	public void setTime(LocalTime time) {
 		this.time = time;
 	}
+	
+	
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 
 	public boolean hasComment(Comment comment) {
 		for (Comment postComment: getComments()) {
@@ -122,4 +148,13 @@ public class Post {
 		}
 		return false;
 }
+	public boolean hasTag(Tag tag) {
+		for (Tag postTag: getTags()) {
+			if (postTag.getTagid() == tag.getTagid()) {
+				return true;
+			}
+		}
+		return false;
+}
+
 }

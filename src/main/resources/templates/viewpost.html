@@ -22,7 +22,20 @@ margin: auto;}
 .commentinput{
 	position: relative;
     margin: auto;
-    width: 800px;
+    width: 600px;
+    background-color: gray;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid white;
+    }
+    
+    .textarea{
+    background-color: black;
+    color: white;
+    width: 100%;
+    height: 150px;
+    border-radius: 6px;
+    border: 1px solid white;
     }
 
 .bubble{
@@ -100,11 +113,12 @@ margin: auto;}
 			</div>
 			
 			<form class="commentinput" th:object="${comment}" th:action="@{/post/{id}/comments(id=${post.id})}" action="#" method="get">
-			<textarea id="komment" th:field="*{text}" rows="2" cols="65"></textarea>
+			<textarea placeholder="Write comment here" class="textarea" id="komment" th:field="*{text}" rows="2" cols="65"></textarea>
 			<div style="clear: both; display: block; height: 5px;"></div>
 			<button class="btn btn-success btn-sm" type="submit">Add comment</button>
 			<div style="clear: both; display: block; height: 5px;"></div>
 			</form>
+			<div style="clear: both; display: block; height: 5px;"></div>
 
 			<span th:each="comment,iterStat : ${post.comments}">
 			<div class="bubble">

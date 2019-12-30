@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 
 import project.posts.post.Domain.Post;
 import project.posts.post.Domain.PostRepository;
+import project.posts.post.Domain.Tag;
+import project.posts.post.Domain.TagRepository;
 
 
 
@@ -21,12 +23,13 @@ public class PostApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner studentDemo(PostRepository prepository) {
+	public CommandLineRunner studentDemo(PostRepository prepository, TagRepository trepository) {
 		return (args) -> {
 			log.info("save a couple of students");
 			prepository.save(new Post("John", "Johnson", "john@john.com"));
 			prepository.save(new Post("Katy", "Kateson", "kate@kate.com"));	
-			
+			trepository.save(new Tag("cartoon"));
+			trepository.save(new Tag("anime"));
 			log.info("fetch all students");
 			for (Post post : prepository.findAll()) {
 				log.info(post.toString());
