@@ -12,8 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +28,9 @@ public class Post {
     private String firstName;
     private String lastName;
     private String email;
-    
+    @Lob
+    private byte[] image;
+    private String imagename;
     @CreationTimestamp
     private LocalDate date;
     @CreationTimestamp
@@ -36,8 +38,14 @@ public class Post {
     
     
     
-    @OneToMany(cascade=CascadeType.ALL, orphanRemoval= true)
-    @JoinColumn(name="id")
+    @ManyToMany(cascade = {
+	        CascadeType.PERSIST,
+	        CascadeType.MERGE
+	    })
+	    @JoinTable(name = "post_comment",
+	        joinColumns = @JoinColumn(name = "id"),
+	        inverseJoinColumns = @JoinColumn(name = "commentid")
+	    )
     private List<Comment> comments = new ArrayList<>();
     
     
@@ -62,11 +70,12 @@ public class Post {
 
     public Post() {}
 
-	public Post(String firstName, String lastName, String email) {
+	public Post(String firstName, String lastName, String email, byte[] image) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.image = image;
 	}
 
 	public Long getId() {
@@ -138,6 +147,24 @@ public class Post {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	
+	public String getImagename() {
+		return imagename;
+	}
+
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
 	}
 
 	public boolean hasComment(Comment comment) {

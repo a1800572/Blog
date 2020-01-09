@@ -90,13 +90,22 @@
     		
     		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
- 			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">add tag to post</a>
+ 			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">Add/remove tags</a>
     		</div>
     		<div>
     		<th class="user" th:text="${post.firstName}" ></th>
     		<th class="user" th:text="${post.lastName}"></th>
     		</div>
     		<p class="text" th:text="${post.email}"></p>
+    		<p class="text" th:text="${post.imagename}"></p>
+    		
+    		
+    		<!-- tämä on kesken -->
+    		<!-- jos kuvan nimi ei ole null näytä kuva vaihtoehtoisesti kirjoita alt viesti -->
+    		
+    		<span th:if="${post.imagename != null}">
+    		<img width="150" th:src="@{${'/temp/' + post.imagename}}" alt="file is not image file"/>
+    		</span>
     		
     		
     		<span th:each="tag,iterStat : ${post.tags}">

@@ -5,14 +5,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name="Comment")
@@ -23,9 +21,8 @@ public class Comment {
 	private Long commentid;
 	private String text;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="id")
-	private Post post;
+	@ManyToMany(mappedBy = "comments")
+	private List<Post> posts = new ArrayList<>();
 	
 	
 	@ManyToMany(cascade = {
@@ -70,12 +67,13 @@ public class Comment {
 		this.replies = replies;
 	}
 
-	public Post getPost() {
-		return post;
+	
+	public List<Post> getPosts() {
+		return posts;
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	public boolean hasReply(Reply reply) {
