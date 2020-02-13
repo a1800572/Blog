@@ -1,0 +1,117 @@
+	.container{
+    color: red;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid red;
+    padding: 3px
+    }
+    .replycontainer{
+    color: black;
+    background-color: gray;
+    border-radius: 10px;
+    border: 2px solid black;
+    width: 1140px;
+    margin: 0 auto;
+    }
+    .info{
+    color: white;
+    font-family: Helvetica;
+    }
+    .replyinfo{
+    color: white;
+    font-family: Helvetica;
+    }
+    .user{
+    color: white;
+    font-family: Helvetica;
+    }
+    .replyuser{
+    color: white;
+    font-family: Helvetica;
+    }
+    .text{
+    word-wrap: break-word;
+   	width: 100%;
+    }
+    .bubble{
+    position: relative;
+    background-color: #aeaaa2;
+    padding: 20px;
+    border-radius: 5px;
+    margin-left: 40px;
+    border: 1px solid black;
+    }
+    .bubble::after{
+    content: "";
+    display: block;
+    position: absolute;
+    left:-19px;
+    top:14px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 20px solid #aeaaa2;
+    }
+    
+    .bubble::before{
+    content: "";
+    display: block;
+    position: absolute;
+    left:-20px;
+    top:15px;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 20px solid black;
+    }
+    
+  
+
+.tag {
+  background: #767676;
+  border-radius: 0 3px 3px 0;
+  color: #fff;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  text-transform: uppercase;
+}
+
+.tag::before {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+}
+
+.tag::after {
+  background: black;
+  border-bottom: 14px solid transparent;
+  border-right: 10px solid #767676;
+  border-top: 14px solid transparent;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.tag:hover {
+  background-color: #0080ff;
+  color: white;
+}
+
+.tag:hover::after {
+   border-right-color: #0080ff; 
+}

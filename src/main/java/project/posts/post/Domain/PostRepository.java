@@ -12,4 +12,5 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     
     Post getPostById(Long postId);
 
+    List<Post> findByTags(Tag tag);
 }

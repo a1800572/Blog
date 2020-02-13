@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -98,6 +99,14 @@ public class PostController {
 		model.addAttribute("replies", rrepository.findAll());
 		
 		return "viewpost";
+    }
+    // tämä on kesken
+    @RequestMapping("/tag/{id}")
+	public String courseReviews(@PathVariable("id") Long tagId, Model model) {
+		Optional<Tag> tag = trepository.findById(tagId);
+		List<Post> posts = (List<Post>) prepository.findByTags(tag.get());
+		model.addAttribute("posts", posts);
+    	return "posttag";
     }
     
     @RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
