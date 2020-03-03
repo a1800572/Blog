@@ -8,7 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
 
-    List<Post> findByLastName(String lastName); 
+    List<Post> findByTitleLike(String title);
+
+    List<Post> findPostByTitleLikeOrDescriptionLike(String title, String description);
     
     Post getPostById(Long postId);
 

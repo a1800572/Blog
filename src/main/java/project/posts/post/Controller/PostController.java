@@ -11,10 +11,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import project.posts.post.Domain.Comment;
@@ -44,8 +41,9 @@ public class PostController {
 	
 	//näyttää kaikki postaukset
     @RequestMapping(value="/postlist")
-    public String postList(Model model) {	
+    public String postList(Model model) {
         model.addAttribute("posts", prepository.findAll());
+        model.addAttribute("count", prepository.count());
 		return "postlist";
     }
   
@@ -100,17 +98,17 @@ public class PostController {
 		
 		return "viewpost";
     }
-    // tämä on kesken
+    // find posts by tag
     @RequestMapping("/tag/{id}")
-	public String courseReviews(@PathVariable("id") Long tagId, Model model) {
+	public String posttag(@PathVariable("id") Long tagId, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
 		List<Post> posts = (List<Post>) prepository.findByTags(tag.get());
 		model.addAttribute("posts", posts);
-    	return "posttag";
+    	return "postlist";
     }
     
     @RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
-	public String studentsAddCourse(@PathVariable("id") Long id, @PathVariable("id") Long commentId, Model model, Comment comment) {
+	public String postaddcomment(@PathVariable("id") Long id, @PathVariable("id") Long commentId, Model model, Comment comment) {
 		Optional<Post> post = prepository.findById(id);
 			if (!post.get().hasComment(comment)) {
 			post.get().getComments().add(comment);}
@@ -121,7 +119,7 @@ public class PostController {
 	}
     
     @RequestMapping(value="/comment/{id}/replies", method=RequestMethod.GET)
-	public String studentsAddCours(@PathVariable("id") Long commentId, @PathVariable("id") Long replyId, Model model, Reply reply) {
+	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("id") Long replyId, Model model, Reply reply) {
 		Optional<Comment> comment = crepository.findById(commentId);
 			if (!comment.get().hasReply(reply)) {
 			comment.get().getReplies().add(reply);}
@@ -177,5 +175,12 @@ public class PostController {
         trepository.save(tag);
         return "redirect:postlist";
     }
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String listUsers(Model model, @RequestParam(defaultValue="") String searchby) {
+		//model.addAttribute("posts", prepository.findByTitleLike("%"+searchby+"%"));
+		model.addAttribute("posts", prepository.findPostByTitleLikeOrDescriptionLike("%"+searchby+"%", "%"+searchby+"%"));
+		return "postlist";
+	}
     
 }

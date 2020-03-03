@@ -8,9 +8,18 @@
 </head>
 <body>
 	<h1>Posts</h1>
+	<h1 th:text="${count}"></h1>
+
+	<form th:action="@{search}" action="#" method="get" class="form-inline">
+		<div class="form-group mb-2">
+			<input type="text" class="form-control" name="searchby" placeholder="Search by title or description" />
+			<input type="submit" value="Search"  class="btn btn-primary"/>
+		</div>
+	</form>
+
 	<a class="btn btn-success btn-sm" href="/addpost">Add Post</a> 
-    <a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a> 
-    
+    <a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a>
+
     	<tr th:each = "post : ${posts}">
     		<div class="container">
     		<div class="info">
@@ -18,18 +27,17 @@
     		<th th:text="${post.date}"></th>
     		
     		
-    		
     		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">Add/remove tags</a>
     		</div>
+
     		<div>
-    		<th class="user" th:text="${post.firstName}" ></th>
-    		<th class="user" th:text="${post.lastName}"></th>
-    		</div>
-    		<p class="text" th:text="${post.email}"></p>
-    		<p class="text" th:text="${post.imagename}"></p>
-    		
+				<p class="text" th:text="${post.title}"></p>
+				<p class="text" th:text="${post.description}"></p>
+				<p class="text" th:text="${post.content}"></p>
+    			<p class="text" th:text="${post.imagename}"></p>
+			</div>
     		
     		<!-- tämä on kesken -->
     		<!-- jos kuvan nimi ei ole null näytä kuva vaihtoehtoisesti kirjoita alt viesti -->

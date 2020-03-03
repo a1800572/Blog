@@ -109,7 +109,7 @@ margin: auto;}
 			<div class="postcontainer">
 			<h1>Post view</h1>
 			<h1 th:text="${post.id}"></h1>
-			<h1 th:text="${post.email}"></h1>
+			<h1 th:text="${post.title}"></h1>
 			</div>
 			
 			<form class="commentinput" th:object="${comment}" th:action="@{/post/{id}/comments(id=${post.id})}" action="#" method="get">

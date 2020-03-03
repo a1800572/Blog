@@ -25,9 +25,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String title;
+    private String description;
+    private String content;
+
     @Lob
     private byte[] image;
     private String imagename;
@@ -70,11 +71,11 @@ public class Post {
 
     public Post() {}
 
-	public Post(String firstName, String lastName, String email, byte[] image) {
+	public Post(byte[] image, String title, String description, String content) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+		this.title = title;
+		this.description = description;
+		this.content = content;
 		this.image = image;
 	}
 
@@ -86,32 +87,6 @@ public class Post {
 		this.id = id;
 	}
 
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	
-
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -119,8 +94,6 @@ public class Post {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-	
-	
 	
 	public LocalDate getDate() {
 		return date;
@@ -165,6 +138,30 @@ public class Post {
 
 	public void setImagename(String imagename) {
 		this.imagename = imagename;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public boolean hasComment(Comment comment) {
