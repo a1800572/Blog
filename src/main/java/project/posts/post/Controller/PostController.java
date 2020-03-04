@@ -131,7 +131,7 @@ public class PostController {
     
   //KESKEN!!!!!!!
     @RequestMapping(value = "addPostTag/{id}", method = RequestMethod.GET)
-    public String addTag(@PathVariable("id") Long postId, Model model){
+    public String addTagtopost(@PathVariable("id") Long postId, Model model){
     		model.addAttribute("tags", trepository.findAll());
     		model.addAttribute("post", prepository.findById(postId).get());
     		return "addPostTag";
@@ -176,10 +176,11 @@ public class PostController {
         return "redirect:postlist";
     }
 
+    //functional search bar
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String listUsers(Model model, @RequestParam(defaultValue="") String searchby) {
+	public String search(Model model, @RequestParam(defaultValue="") String searchby) {
 		//model.addAttribute("posts", prepository.findByTitleLike("%"+searchby+"%"));
-		model.addAttribute("posts", prepository.findPostByTitleLikeOrDescriptionLike("%"+searchby+"%", "%"+searchby+"%"));
+		model.addAttribute("posts", prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%"));
 		return "postlist";
 	}
     

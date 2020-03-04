@@ -10,8 +10,8 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 
     List<Post> findByTitleLike(String title);
 
-    List<Post> findPostByTitleLikeOrDescriptionLike(String title, String description);
-    
+    List<Post> findPostByTitleLikeOrDescriptionLikeOrContentLike(String title, String description, String content);
+
     Post getPostById(Long postId);
 
     List<Post> findByTags(Tag tag);
