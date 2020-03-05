@@ -8,6 +8,12 @@
 <body>
 <div class="container">
 	<h1>Add tag</h1>
+
+	<p>Tags attached to this post</p>
+	<span th:each="tag,iterStat : ${post.tags}">
+	<span th:text="${tag.name}"/>
+	</span>
+
 	<form th:action="@{/post/{id}/tags(id=${post.id})}" method="get" enctype="multipart/form-data" >
 	
 			
@@ -15,7 +21,7 @@
 			<select class="form-control" name="tagId">
 				<option th:each="tag : ${tags}" 
 					th:value="${tag.tagid}" 
-					th:text="${tag.name}">Course</option>
+					th:text="${tag.name}">Tag</option>
 			</select>
 			<div style="clear: both; display: block; height: 5px;"></div>
 			<input type="submit" name="action" class="btn btn-primary" value="Save tag"></input>

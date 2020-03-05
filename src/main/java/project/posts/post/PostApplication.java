@@ -8,11 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import project.posts.post.Domain.Post;
-import project.posts.post.Domain.PostRepository;
-import project.posts.post.Domain.Tag;
-import project.posts.post.Domain.TagRepository;
-
+import project.posts.post.Domain.*;
 
 
 @SpringBootApplication
@@ -32,12 +28,15 @@ public class PostApplication {
 	 }
 	
 	@Bean
-	public CommandLineRunner studentDemo(PostRepository prepository, TagRepository trepository) {
+	public CommandLineRunner studentDemo(PostRepository prepository, TagRepository trepository, PostStatusRepository psrepository) {
 		return (args) -> {
 			log.info("save a couple of students");
 			
 			trepository.save(new Tag("cartoon"));
 			trepository.save(new Tag("anime"));
+
+			psrepository.save(new PostStatus("WIP"));
+			psrepository.save(new PostStatus("Complete"));
 			log.info("fetch all students");
 			for (Post post : prepository.findAll()) {
 				log.info(post.toString());

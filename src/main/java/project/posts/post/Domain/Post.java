@@ -5,16 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -63,19 +54,23 @@ public class Post {
 	        inverseJoinColumns = @JoinColumn(name = "tagid")
 	    )
 	    private List<Tag> tags = new ArrayList<>();
-    
-    
+
+
+	@ManyToOne
+	@JoinColumn(name="poststatusid")
+	private PostStatus poststatus;
     
     
     
 
     public Post() {}
 
-	public Post(byte[] image, String title, String description, String content) {
+	public Post(byte[] image, String title, String description, String content, PostStatus poststatus) {
 		super();
 		this.title = title;
 		this.description = description;
 		this.content = content;
+		this.poststatus = poststatus;
 		this.image = image;
 	}
 
@@ -162,6 +157,14 @@ public class Post {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public PostStatus getPoststatus() {
+		return poststatus;
+	}
+
+	public void setPoststatus(PostStatus poststatus) {
+		this.poststatus = poststatus;
 	}
 
 	public boolean hasComment(Comment comment) {

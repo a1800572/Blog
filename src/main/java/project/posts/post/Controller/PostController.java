@@ -14,15 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import project.posts.post.Domain.Comment;
-import project.posts.post.Domain.CommentRepository;
-import project.posts.post.Domain.Post;
-import project.posts.post.Domain.PostRepository;
-import project.posts.post.Domain.Reply;
-import project.posts.post.Domain.ReplyRepository;
-import project.posts.post.Domain.Tag;
-import project.posts.post.Domain.TagRepository;
-
+import project.posts.post.Domain.*;
 
 
 @Controller
@@ -38,6 +30,9 @@ public class PostController {
 	
 	@Autowired
 	private TagRepository trepository;
+
+	@Autowired
+	private PostStatusRepository psrepository;
 	
 	//näyttää kaikki postaukset
     @RequestMapping(value="/postlist")
@@ -51,6 +46,7 @@ public class PostController {
     @RequestMapping(value = "/addpost")
     public String addPost(Model model){
     	model.addAttribute("post", new Post());
+    	model.addAttribute("poststatuses", psrepository.findAll());
         return "addpost";
     }     
     
