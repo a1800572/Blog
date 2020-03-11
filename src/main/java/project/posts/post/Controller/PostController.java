@@ -179,5 +179,16 @@ public class PostController {
 		model.addAttribute("posts", prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%"));
 		return "postlist";
 	}
+
+
+	@RequestMapping(value = "/post/{id}")
+	public String Sendtocommentsection(@PathVariable("id") Long postId, Model model) {
+		model.addAttribute("post", prepository.getPostById(postId));
+		model.addAttribute("comment", new Comment());
+		model.addAttribute("comments", crepository.findAll());
+		model.addAttribute("reply", new Reply());
+		model.addAttribute("replies", rrepository.findAll());
+		return "viewpost";
+	}
     
 }
