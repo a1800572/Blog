@@ -4,11 +4,13 @@
     <title>Postlist</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link type="text/css"rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+	<link type="text/css" rel="stylesheet" href="/css/all.css" th:href="@{/css/all.css}" />
     <link type="text/css" rel="stylesheet" href="/css/Customstyles.css" th:href="@{/css/Customstyles.css}" />
 </head>
 <body>
 	<h1>Posts</h1>
 	<h1 th:text="${count}"></h1>
+
 
 	<form th:action="@{search}" action="#" method="get" class="form-inline">
 		<div class="form-group mb-2">
@@ -30,10 +32,12 @@
     		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
  			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">Add/remove tags</a>
-			<a class="btn btn-primary btn-sm" th:href="@{/post/{id}#commentsection(id=${post.id})}" th:text="${#lists.size(post.comments)+' Comments'}"></a>
+                
+			<a class="btn btn-primary btn-sm" th:href="@{/post/{id}#commentsection(id=${post.id})}">
+			<i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
+            </a>
 
     		</div>
-
     		<div>
 				<p class="text" th:text="${post.title}"></p>
 				<p class="text" th:text="${post.description}"></p>
