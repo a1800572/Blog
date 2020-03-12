@@ -28,7 +28,7 @@ public class Post {
     @CreationTimestamp
 	private LocalTime time;
     
-    
+
     
     @ManyToMany(cascade = {
 	        CascadeType.PERSIST,
@@ -40,7 +40,7 @@ public class Post {
 	    )
     private List<Comment> comments = new ArrayList<>();
     
-    
+
     
     
     

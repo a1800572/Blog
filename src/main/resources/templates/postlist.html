@@ -25,17 +25,29 @@
     	<tr th:each = "post : ${posts}">
     		<div class="container">
     		<div class="info">
+			<i class="fas fa-clock">
     		<th th:text="${post.time}"></th>
     		<th th:text="${post.date}"></th>
+			</i>
     		
     		
-    		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">Delete</a>
- 			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">Post details</a>
- 			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">Add/remove tags</a>
+    		<a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">
+			<i class="fas fa-trash"> Delete</i>
+			</a>
+
+ 			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">
+			<i class="fas fa-info-circle"> Post details</i>
+			</a>
+
+ 			<a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">
+			<i class="fas fa-tags"> Add/remove tags</i>
+			</a>
                 
 			<a class="btn btn-primary btn-sm" th:href="@{/post/{id}#commentsection(id=${post.id})}">
 			<i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
             </a>
+
+			<a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">Edit post</a>
 
     		</div>
     		<div>
