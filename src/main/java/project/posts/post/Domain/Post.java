@@ -1,6 +1,7 @@
 package project.posts.post.Domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 @Entity(name="Post")
@@ -23,13 +25,13 @@ public class Post {
     @Lob
     private byte[] image;
     private String imagename;
+    @Column(updatable = false)
     @CreationTimestamp
-    private LocalDate date;
-    @CreationTimestamp
-	private LocalTime time;
+    private LocalDateTime creationdatetime;
+    @UpdateTimestamp
+	private LocalDateTime updatedatetime;
     
 
-    
     @ManyToMany(cascade = {
 	        CascadeType.PERSIST,
 	        CascadeType.MERGE
@@ -89,25 +91,7 @@ public class Post {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-	
-	public LocalDate getDate() {
-		return date;
-	}
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	
-	
-	public LocalTime getTime() {
-		return time;
-	}
-
-	public void setTime(LocalTime time) {
-		this.time = time;
-	}
-	
-	
 
 	public List<Tag> getTags() {
 		return tags;
@@ -165,6 +149,22 @@ public class Post {
 
 	public void setPoststatus(PostStatus poststatus) {
 		this.poststatus = poststatus;
+	}
+
+	public LocalDateTime getUpdatedatetime() {
+		return updatedatetime;
+	}
+
+	public void setUpdatedatetime(LocalDateTime updatedatetime) {
+		this.updatedatetime = updatedatetime;
+	}
+
+	public LocalDateTime getCreationdatetime() {
+		return creationdatetime;
+	}
+
+	public void setCreationdatetime(LocalDateTime creationdatetime) {
+		this.creationdatetime = creationdatetime;
 	}
 
 	public boolean hasComment(Comment comment) {

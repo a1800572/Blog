@@ -25,9 +25,10 @@
     	<tr th:each = "post : ${posts}">
     		<div class="container">
     		<div class="info">
+
 			<i class="fas fa-clock">
-    		<th th:text="${post.time}"></th>
-    		<th th:text="${post.date}"></th>
+    		<th th:text="${post.creationdatetime.month}+' '+${post.creationdatetime.dayOfMonth}+' '+${post.creationdatetime.year}"></th>
+			<th th:text="${post.updatedatetime.month}+' '+${post.updatedatetime.dayOfMonth}+' '+${post.updatedatetime.year}"></th>
 			</i>
     		
     		
@@ -43,7 +44,7 @@
 			<i class="fas fa-tags"> Add/remove tags</i>
 			</a>
                 
-			<a class="btn btn-primary btn-sm" th:href="@{/post/{id}#commentsection(id=${post.id})}">
+			<a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}#commentsection(id=${post.id})}">
 			<i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
             </a>
 

@@ -180,18 +180,6 @@ public class PostController {
 		return "postlist";
 	}
 
-
-	//sends to commentsection might remove later
-	@RequestMapping(value = "/post/{id}")
-	public String Sendtocommentsection(@PathVariable("id") Long postId, Model model) {
-		model.addAttribute("post", prepository.getPostById(postId));
-		model.addAttribute("comment", new Comment());
-		model.addAttribute("comments", crepository.findAll());
-		model.addAttribute("reply", new Reply());
-		model.addAttribute("replies", rrepository.findAll());
-		return "viewpost";
-	}
-
 	@RequestMapping(value = "/editpost/{id}")
 	public String editpost(@PathVariable("id") Long postId, Model model){
 		model.addAttribute("post", prepository.findById(postId));
