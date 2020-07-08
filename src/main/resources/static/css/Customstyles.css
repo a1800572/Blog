@@ -115,3 +115,176 @@
 .tag:hover::after {
    border-right-color: #0080ff; 
 }
+
+<!--viewpost styles-->
+
+    .background{
+        height: 100%;
+        position: relative;
+        margin: auto;
+    }
+
+    .postcontainer{
+        top: 5px;
+        position: relative;
+        margin: auto;
+        width: 800px;
+        background-color: black;
+        color: red;
+        text-align: left;
+    }
+
+    .commentinput{
+        position: relative;
+        margin: auto;
+        width: 600px;
+        background-color: gray;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid white;
+    }
+
+    .textarea{
+        background-color: black;
+        color: white;
+        width: 100%;
+        height: 150px;
+        border-radius: 6px;
+        border: 1px solid white;
+    }
+
+    .commentreplybubble{
+        position: relative;
+        margin: auto;
+        width: 800px;
+
+        background-color: #aeaaa2;
+        padding: 20px;
+        border-radius: 5px;
+        border: 1px solid black;
+    }
+    .commentreplybubble::after{
+        content: "";
+        display: block;
+        position: absolute;
+        left:-19px;
+        top:14px;
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 0px solid transparent;
+        border-right: 20px solid #aeaaa2;
+    }
+
+    .commentreplybubble::before{
+        content: "";
+        display: block;
+        position: absolute;
+        left:-20px;
+        top:15px;
+        width: 0;
+        height: 0;
+        border-top: 20px solid transparent;
+        border-bottom: 0px solid transparent;
+        border-right: 20px solid black;
+    }
+
+    .dropdownreply {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdownreply-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdownreply-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdownreply-content a:hover {background-color: #ddd;}
+
+    .dropdownreply:hover .dropdownreply-content {display: block;}
+
+
+
+
+
+
+
+    <!-- navigation styles -->
+
+    .main{
+        width: 100%;
+        height: 100vh;
+
+    }
+
+    nav{
+        width: 100%;
+        height: 80px;
+        background-color: #000000;
+        line-height: 80px;
+    }
+    nav ul{
+        float: right;
+        margin-right: 30px;
+    }
+
+    nav ul li{
+        list-style-type: none;
+        display: inline-block;
+        transition: 0.8s all;
+    }
+
+    nav ul li:hover{
+        background-color: #f39d1a;
+    }
+    nav ul li a{
+        text-decoration: none;
+        font-family: fantasy;
+        font-size: 25px;
+        text-shadow: 2px 2px red;
+        color: #fff;
+        padding: 30px;
+    }
+
+
+
+
+<!-- dropdown styles -->
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        width: 350px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        right: 0px;
+    }
+
+    .show {display: block;}
+
+
+    .dropbtn:after {
+        content: "\25BC";
+    }
+
+    .dropbtn[data-toggle="on"]:after {
+        content: "\25B2";
+    }

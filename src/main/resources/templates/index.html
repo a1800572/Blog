@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css"rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/all.css" th:href="@{/css/all.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/Customstyles.css" th:href="@{/css/Customstyles.css}" />
+</head>
+
+<body>
+
+
+
+<div id="main">
+<nav>
+    <ul>
+        <li><a th:href="@{/}"><i class="fa fa-home"></i> Kotisivu</a></li>
+        <li><a th:href="@{/postlist}"><i class="fas fa-pen"></i> Postlist</a></li>
+        <li>
+            <div class="dropdown">
+            <a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
+            <div id="myDropdown" class="dropdown-content" data-state="closed">
+            <form th:action="@{search}" action="#" method="get" class="form-inline">
+            <div class="form-group mb-2">
+            <input type="text" class="form-control" name="searchby" placeholder="Search by title or description" />
+            <input type="submit" value="Search"  class="btn btn-primary"/>
+            </div>
+            </form>
+            </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+</div>
+<script type="text/javascript" th:src="@{/js/actions.js}"></script>
+</body>
+</html>

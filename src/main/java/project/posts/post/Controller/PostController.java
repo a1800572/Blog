@@ -78,7 +78,7 @@ public class PostController {
     public String deletePost(@PathVariable("id") Long postId, Model model) {
     	prepository.deleteById(postId);
         return "redirect:../postlist";
-    }    
+    }
     
     @RequestMapping(value = "/postlist/view/{id}", method = RequestMethod.GET)
 	public String Viewpost(@PathVariable("id") Long postId, Model model) {
@@ -113,7 +113,18 @@ public class PostController {
 			model.addAttribute("comments", crepository.findAll());
 			return "redirect:/postlist/view/{id}";
 	}
-    
+
+	//voidaan poistaa kommentti
+	@RequestMapping(value="/post/{postid}/deletecomment/{commentid}", method=RequestMethod.GET)
+	public String deletecomment(@PathVariable("postid") Long id, @PathVariable("commentid") Long commentId) {
+		Optional<Comment> comment = crepository.findById(commentId);
+		Optional<Post> post = prepository.findById(id);
+			post.get().getComments().remove(comment.get());
+			crepository.deleteById(commentId);
+			return "redirect:/postlist/view/{postid}";
+		}
+
+
     @RequestMapping(value="/comment/{id}/replies", method=RequestMethod.GET)
 	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("id") Long replyId, Model model, Reply reply) {
 		Optional<Comment> comment = crepository.findById(commentId);
@@ -186,5 +197,10 @@ public class PostController {
 		model.addAttribute("poststatuses", psrepository.findAll());
     	return "editpost";
 	}
-    
+
+	@RequestMapping(value = "/")
+	public String index(){
+    	return "index";
+	}
+
 }
