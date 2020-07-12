@@ -42,10 +42,6 @@ public class Post {
 	    )
     private List<Comment> comments = new ArrayList<>();
     
-
-    
-    
-    
     
     @ManyToMany(cascade = {
 	        CascadeType.PERSIST,
@@ -56,6 +52,17 @@ public class Post {
 	        inverseJoinColumns = @JoinColumn(name = "tagid")
 	    )
 	    private List<Tag> tags = new ArrayList<>();
+
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "post_rating",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "ratingid")
+    )
+    private List<Rating> ratings = new ArrayList<>();
 
 
 	@ManyToOne
@@ -110,8 +117,15 @@ public class Post {
 		this.image = image;
 	}
 
-	
-	public String getImagename() {
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
+    }
+
+    public String getImagename() {
 		return imagename;
 	}
 
@@ -183,5 +197,13 @@ public class Post {
 		}
 		return false;
 }
+    public boolean hasRating(Rating rating) {
+        for (Rating postRating: getRatings()) {
+            if (postRating.getRatingid() == rating.getRatingid()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

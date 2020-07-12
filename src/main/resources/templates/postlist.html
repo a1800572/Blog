@@ -67,6 +67,10 @@
 
 			<a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">Edit post</a>
 
+			<a class="btn btn-primary btn-sm" th:href="@{/addPostrating/{id}(id=${post.id})}">
+			<i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
+			</a>
+
     		</div>
     		<div>
 				<p class="text" th:text="${post.title}"></p>

@@ -33,6 +33,9 @@ public class PostController {
 
 	@Autowired
 	private PostStatusRepository psrepository;
+
+	@Autowired
+	private RatingRepository rarepository;
 	
 	//näyttää kaikki postaukset
     @RequestMapping(value="/postlist")
@@ -170,13 +173,15 @@ public class PostController {
 		return "redirect:/addPostTag/{id}";
 		
 	}    
-    
+
+	//luodaan uusi tag olio
     @RequestMapping(value = "/addtag")
     public String addTag(Model model){
     	model.addAttribute("tag", new Tag());
         return "addtag";
     }     
-    
+
+    //tallennetaan luotu olio
     @RequestMapping(value = "/savetag", method = RequestMethod.POST)
     public String saveTag(Tag tag){
         trepository.save(tag);
@@ -198,9 +203,30 @@ public class PostController {
     	return "editpost";
 	}
 
+	//root
 	@RequestMapping(value = "/")
 	public String index(){
     	return "index";
+	}
+
+	//luodaan rating olio
+	@RequestMapping(value = "/addPostrating/{id}")
+	public String addRating(@PathVariable("id") Long postId, Model model){
+		model.addAttribute("post", prepository.getPostById(postId));
+		model.addAttribute("rating", new Rating());
+		return "addrating";
+	}
+
+	//tallennetaan rating olio post oliolle
+	@RequestMapping(value="/post/{id}/ratings", method=RequestMethod.GET)
+	public String postaddrating(@PathVariable("id") Long id, Model model, Rating rating) {
+		Optional<Post> post = prepository.findById(id);
+		if (!post.get().hasRating(rating)) {
+			post.get().getRatings().add(rating);}
+		prepository.save(post.get());
+		model.addAttribute("post", prepository.findById(id));
+		model.addAttribute("ratings", rarepository.findAll());
+		return "redirect:/postlist";
 	}
 
 }
