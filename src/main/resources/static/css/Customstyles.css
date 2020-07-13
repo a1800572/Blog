@@ -297,3 +297,12 @@
     .dropbtn[data-toggle="on"]:after {
         content: "\25B2";
     }
+
+
+    .stardefault {
+        color: gray;
+    }
+
+    .starafter {
+        color: gold;
+    }
