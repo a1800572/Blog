@@ -1,17 +1,12 @@
 package project.posts.post.Domain;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity(name="Comment")
 @Table(name="comment")
@@ -20,6 +15,10 @@ public class Comment {
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private Long commentid;
 	private String text;
+
+	@Column(updatable = false)
+	@CreationTimestamp
+	private LocalDateTime creationdatetime;
 	
 	@ManyToMany(mappedBy = "comments")
 	private List<Post> posts = new ArrayList<>();
@@ -57,8 +56,15 @@ public class Comment {
 	public void setText(String text) {
 		this.text = text;
 	}
-	
-	
+
+	public LocalDateTime getCreationdatetime() {
+		return creationdatetime;
+	}
+
+	public void setCreationdatetime(LocalDateTime creationdatetime) {
+		this.creationdatetime = creationdatetime;
+	}
+
 	public List<Reply> getReplies() {
 		return replies;
 	}

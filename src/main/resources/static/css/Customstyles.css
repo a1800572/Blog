@@ -161,7 +161,7 @@
         width: 800px;
 
         background-color: #aeaaa2;
-        padding: 20px;
+        padding: 5px;
         border-radius: 5px;
         border: 1px solid black;
     }
@@ -306,3 +306,7 @@
     .starafter {
         color: gold;
     }
+
+    <!--pagination styles -->
+
+

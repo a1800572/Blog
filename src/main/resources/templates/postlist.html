@@ -13,12 +13,12 @@
 	<nav>
 	<ul>
 	<li><a th:href="@{/}"><i class="fa fa-home"></i> Kotisivu</a></li>
-	<li><a th:href="@{/postlist}"><i class="fas fa-pen"></i> Postlist</a></li>
+	<li><a th:href="@{/postlist/page/1}"><i class="fas fa-pen"></i> Postlist</a></li>
 	<li>
 	<div class="dropdown">
 	<a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
 	<div id="myDropdown" class="dropdown-content" data-state="closed">
-	<form th:action="@{search}" action="#" method="get" class="form-inline">
+	<form th:action="@{/page/1/search}" action="#" method="get" class="form-inline">
 	<div class="form-group mb-2">
 	<input type="text" class="form-control" name="searchby" placeholder="Search by title or description" />
 	<input type="submit" value="Search"  class="btn btn-primary"/>
@@ -33,8 +33,7 @@
 
 	<script type="text/javascript" th:src="@{/js/actions.js}"></script>
 
-	<h1>Posts</h1>
-	<h1 th:text="${count}"></h1>
+	<h1>All Posts</h1>
 
 	<a class="btn btn-success btn-sm" href="/addpost">Add Post</a> 
     <a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a>
@@ -65,7 +64,9 @@
 			<i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
             </a>
 
-			<a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">Edit post</a>
+			<a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">
+			<i class="fas fa-pen"> Edit post</i>
+			</a>
 
 			<a class="btn btn-primary btn-sm" th:href="@{/addPostrating/{id}(id=${post.id})}">
 			<i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
@@ -148,9 +149,9 @@
     		</span>
     		<br>
     		<div style="clear: both; display: block; height: 5px;"></div>
-    		
+
     		<span th:each="tag,iterStat : ${post.tags}">
-    		<a class="tag" th:href="@{/tag/{id}(id=${tag.tagid})}">
+    		<a class="tag" th:href="@{/page/1/tag/{id}(id=${tag.tagid})}">
 			<span th:text="${tag.name}"/>
 			</a>
 			</span>
@@ -158,6 +159,38 @@
  			</div>
  			<div style="clear: both; display: block; height: 5px;"></div>
  			
-    	</tr>   	
+    	</tr>
+
+	<!--pagination start-->
+	<div class="paginationposition">
+
+
+		<span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
+
+		<!--working-->
+		<a th:if="${currentpage > 1}" th:href="@{/postlist/page/1}" th:text=" First"></a>
+		<span th:unless="${currentpage > 1}" th:text=" First"></span>
+
+		<!--working-->
+		<a th:if="${currentpage > 1}" th:href="@{/postlist/page/{currentpage}(currentpage=${currentpage}-1)}" th:text=" Previous"></a>
+		<span th:unless="${currentpage > 1}" th:text=" Previous"></span>
+
+		<!--working-->
+		<span th:each="i: ${#numbers.sequence(1,totalpages)}">
+		<a th:if="${i != currentpage}" th:href="@{/postlist/page/{pagenumber}(pagenumber=${i})}" th:text="${i}"></a>
+		<span th:unless="${i != currentpage}" th:text="${i}"></span>
+		</span>
+
+		<!--working-->
+		<a th:if="${currentpage < totalpages}" th:href="@{/postlist/page/{currentpage}(currentpage=${currentpage}+1)}" th:text=" Next"></a>
+		<span th:unless="${currentpage < totalpages}" th:text=" Next"></span>
+
+		<!--working-->
+		<a th:if="${currentpage < totalpages}" th:href="@{/postlist/page/{totalpages}(totalpages=${totalpages})}" th:text=" Last"></a>
+		<span th:unless="${currentpage < totalpages}" th:text=" Last"></span>
+
+
+	</div>
+	<!--pagination end-->
 </body>
 </html>

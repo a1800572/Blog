@@ -6,9 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +40,25 @@ public class PostController {
 	@Autowired
 	private RatingRepository rarepository;
 	
-	//näyttää kaikki postaukset
+	//näyttää kaikki postaukset ekalla sivulla
     @RequestMapping(value="/postlist")
     public String postList(Model model) {
-        model.addAttribute("posts", prepository.findAll());
-        model.addAttribute("count", prepository.count());
+		listByPage(model,1);
 		return "postlist";
     }
+
+    //kaikki postaukset paginoituna
+    @RequestMapping(value="/postlist/page/{pagenumber}")
+	public String listByPage(Model model, @PathVariable("pagenumber") Integer currentpage){
+		Page<Post> pageposts = prepository.findAll(PageRequest.of(currentpage-1,4));
+		Long totalitems = pageposts.getTotalElements();
+		Integer totalpages = pageposts.getTotalPages();
+		model.addAttribute("currentpage", currentpage);
+		model.addAttribute("totalpages", totalpages);
+		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("posts", pageposts);
+    	return "postlist";
+	}
   
     //uudelleen ohjaa sivulle jossa voi tehdä postauksen
     @RequestMapping(value = "/addpost")
@@ -97,13 +112,19 @@ public class PostController {
 		
 		return "viewpost";
     }
-    // find posts by tag
-    @RequestMapping("/tag/{id}")
-	public String posttag(@PathVariable("id") Long tagId, Model model) {
+    // paginate posts by tag
+    @RequestMapping("/page/{pagenumber}/tag/{id}")
+	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
-		List<Post> posts = (List<Post>) prepository.findByTags(tag.get());
+		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
+		Long totalitems = posts.getTotalElements();
+		Integer totalpages = posts.getTotalPages();
+		model.addAttribute("currentpage", currentpage);
+		model.addAttribute("totalpages", totalpages);
+		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("tagid", tagId);
 		model.addAttribute("posts", posts);
-    	return "postlist";
+    	return "tagspostlist";
     }
     
     @RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
@@ -188,12 +209,21 @@ public class PostController {
         return "redirect:postlist";
     }
 
-    //functional search bar
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search(Model model, @RequestParam(defaultValue="") String searchby) {
+    //functional search bar with pagination
+	@RequestMapping(value = "/page/{pagenumber}/search", method = RequestMethod.GET)
+	public String search(Model model, @PathVariable("pagenumber") Integer currentpage, @RequestParam(defaultValue="") String searchby) {
 		//model.addAttribute("posts", prepository.findByTitleLike("%"+searchby+"%"));
-		model.addAttribute("posts", prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%"));
-		return "postlist";
+		Page<Post> pageposts = prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%",PageRequest.of(currentpage-1,4));
+
+		Long totalitems = pageposts.getTotalElements();
+		Integer totalpages = pageposts.getTotalPages();
+
+		model.addAttribute("currentpage", currentpage);
+		model.addAttribute("totalpages", totalpages);
+		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("searchby", searchby);
+		model.addAttribute("posts", pageposts);
+		return "searchresults";
 	}
 
 	@RequestMapping(value = "/editpost/{id}")

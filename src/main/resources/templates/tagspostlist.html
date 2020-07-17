@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tags Postlist</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css"rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/all.css" th:href="@{/css/all.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/Customstyles.css" th:href="@{/css/Customstyles.css}" />
+</head>
+<body>
+
+<div id="main">
+    <nav>
+        <ul>
+            <li><a th:href="@{/}"><i class="fa fa-home"></i> Kotisivu</a></li>
+            <li><a th:href="@{/postlist}"><i class="fas fa-pen"></i> Postlist</a></li>
+            <li>
+                <div class="dropdown">
+                    <a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
+                    <div id="myDropdown" class="dropdown-content" data-state="closed">
+                        <form th:action="@{/page/1/search}" action="#" method="get" class="form-inline">
+                            <div class="form-group mb-2">
+                                <input type="text" class="form-control" name="searchby" placeholder="Search by title or description" />
+                                <input type="submit" value="Search"  class="btn btn-primary"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script type="text/javascript" th:src="@{/js/actions.js}"></script>
+
+<h1>Posts by tags</h1>
+
+<a class="btn btn-success btn-sm" href="/addpost">Add Post</a>
+<a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a>
+
+<tr th:each = "post : ${posts}">
+    <div class="container">
+        <div class="info">
+
+            <i class="fas fa-clock">
+                <th th:text="${post.creationdatetime.month}+' '+${post.creationdatetime.dayOfMonth}+' '+${post.creationdatetime.year}"></th>
+                <th th:text="${post.updatedatetime.month}+' '+${post.updatedatetime.dayOfMonth}+' '+${post.updatedatetime.year}"></th>
+            </i>
+
+
+            <a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">
+                <i class="fas fa-trash"> Delete</i>
+            </a>
+
+            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">
+                <i class="fas fa-info-circle"> Post details</i>
+            </a>
+
+            <a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">
+                <i class="fas fa-tags"> Add/remove tags</i>
+            </a>
+
+            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}#commentsection(id=${post.id})}">
+                <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
+            </a>
+
+            <a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">
+                <i class="fas fa-pen"> Edit post</i>
+            </a>
+
+            <a class="btn btn-primary btn-sm" th:href="@{/addPostrating/{id}(id=${post.id})}">
+                <i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
+            </a>
+
+        </div>
+        <div>
+            <p class="text" th:text="${post.title}"></p>
+            <p class="text" th:text="${post.description}"></p>
+            <p class="text" th:text="${post.content}"></p>
+            <p class="text" th:text="${post.imagename}"></p>
+            <p class="text" th:text="${post.poststatus.status}"></p>
+            <p th:text="${#aggregates.avg(post.ratings.![star])}"></p>
+        </div>
+
+
+        <span th:if="${#aggregates.avg(post.ratings.![star])>=1 && #aggregates.avg(post.ratings.![star])<2}">
+					<span class="starafter">
+					<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+        <span th:if="${#aggregates.avg(post.ratings.![star])>=2 && #aggregates.avg(post.ratings.![star])<3}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+        <span th:if="${#aggregates.avg(post.ratings.![star])>=3 && #aggregates.avg(post.ratings.![star])<4}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+        <span th:if="${#aggregates.avg(post.ratings.![star])>=4 && #aggregates.avg(post.ratings.![star])<5}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+        <span th:if="${#aggregates.avg(post.ratings.![star])==5}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+        <!-- tämä on kesken -->
+        <!-- jos kuvan nimi ei ole null näytä kuva vaihtoehtoisesti kirjoita alt viesti -->
+
+        <span th:if="${post.imagename != null}">
+    		<img width="150" th:src="@{${'/temp/' + post.imagename}}" alt="file is not image file"/>
+    		</span>
+        <br>
+        <div style="clear: both; display: block; height: 5px;"></div>
+
+        <span th:each="tag,iterStat : ${post.tags}">
+    		<a class="tag" th:href="@{/page/{pagenumber}/tag/{id}(id=${tag.tagid}, pagenumber=${currentpage})}">
+			<span th:text="${tag.name}"/>
+			</a>
+			</span>
+
+    </div>
+    <div style="clear: both; display: block; height: 5px;"></div>
+
+</tr>
+
+<!--pagination start-->
+<div class="paginationposition">
+
+
+    <span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
+
+    <!--working-->
+    <a th:if="${currentpage > 1}" th:href="@{/page/1/tag/{id}(id=${tagid})}" th:text=" First"></a>
+    <span th:unless="${currentpage > 1}" th:text=" First"></span>
+
+    <!--working-->
+    <a th:if="${currentpage > 1}" th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}-1, id=${tagid})}" th:text=" Previous"></a>
+    <span th:unless="${currentpage > 1}" th:text=" Previous"></span>
+
+    <!--working-->
+    <span th:each="i: ${#numbers.sequence(1,totalpages)}">
+		<a th:if="${i != currentpage}" th:href="@{/page/{pagenumber}/tag/{id}(pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
+		<span th:unless="${i != currentpage}" th:text="${i}"></span>
+		</span>
+
+    <!--working-->
+    <a th:if="${currentpage < totalpages}" th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}+1, id=${tagid})}" th:text=" Next"></a>
+    <span th:unless="${currentpage < totalpages}" th:text=" Next"></span>
+
+    <!--working-->
+    <a th:if="${currentpage < totalpages}" th:href="@{/page/{totalpages}/tag/{id}(totalpages=${totalpages}, id=${tagid})}" th:text=" Last"></a>
+    <span th:unless="${currentpage < totalpages}" th:text=" Last"></span>
+
+
+</div>
+<!--pagination end-->
+</body>
+</html>
