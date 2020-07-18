@@ -307,6 +307,8 @@
         color: gold;
     }
 
-    <!--pagination styles -->
 
-
+    .paginationposition {
+        text-align: center;
+        font-size: 20px;
+    }
