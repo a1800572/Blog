@@ -119,10 +119,12 @@ public class PostController {
 		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
 		Long totalitems = posts.getTotalElements();
 		Integer totalpages = posts.getTotalPages();
+		String name = tag.get().getName().toUpperCase();
 		model.addAttribute("currentpage", currentpage);
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("tagid", tagId);
+		model.addAttribute("name", name);
 		model.addAttribute("posts", posts);
     	return "tagspostlist";
     }
