@@ -105,9 +105,9 @@ public class PostController {
 		model.addAttribute("comment", new Comment());
 		// tämä voidaan poistaa myöhemmin
 		model.addAttribute("comments", crepository.findAll());
-		
+
 		model.addAttribute("reply", new Reply());
-		
+
 		model.addAttribute("replies", rrepository.findAll());
 		
 		return "viewpost";
@@ -140,7 +140,7 @@ public class PostController {
 			return "redirect:/postlist/view/{id}";
 	}
 
-	//voidaan poistaa kommentti
+	//voidaan poistaa kommentti olio
 	@RequestMapping(value="/post/{postid}/deletecomment/{commentid}", method=RequestMethod.GET)
 	public String deletecomment(@PathVariable("postid") Long id, @PathVariable("commentid") Long commentId) {
 		Optional<Comment> comment = crepository.findById(commentId);
@@ -150,16 +150,26 @@ public class PostController {
 			return "redirect:/postlist/view/{postid}";
 		}
 
+	//voidaan poistaa reply olio
+	@RequestMapping(value="/{postid}/comment/{commentid}/deletereply/{replyid}", method=RequestMethod.GET)
+	public String deletereply(@PathVariable("postid") Long id, @PathVariable("commentid") Long commentId, @PathVariable("replyid") Long replyId) {
+		Optional<Comment> comment = crepository.findById(commentId);
+		Optional<Reply> reply = rrepository.findById(replyId);
+		comment.get().getReplies().remove(reply.get());
+		rrepository.deleteById(replyId);
+		return "redirect:/postlist/view/{postid}";
+	}
 
-    @RequestMapping(value="/comment/{id}/replies", method=RequestMethod.GET)
-	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("id") Long replyId, Model model, Reply reply) {
+
+    @RequestMapping(value="/{postid}/comment/{id}/replies", method=RequestMethod.GET)
+	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("postid") Long id, Model model, Reply reply) {
 		Optional<Comment> comment = crepository.findById(commentId);
 			if (!comment.get().hasReply(reply)) {
 			comment.get().getReplies().add(reply);}
 			crepository.save(comment.get());
 			model.addAttribute("comment", crepository.findById(commentId));
 			model.addAttribute("replies", rrepository.findAll());		
-			return "redirect:/postlist";
+			return "redirect:/postlist/view/{postid}";
 	}
     
   //KESKEN!!!!!!!

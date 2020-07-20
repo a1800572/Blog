@@ -63,7 +63,7 @@
 				</i>
 
 
-			<a class="btn btn-danger btn-sm" th:href="@{/post/{postid}/deletecomment/{commentid}(postid=${post.id}, commentid=${comment.commentid})}" method="get">
+			<a class="btn btn-danger btn-sm" th:href="@{/post/{postid}/deletecomment/{commentid}#commentsection(postid=${post.id}, commentid=${comment.commentid})}" method="get">
 			<i class="fas fa-trash"> Comment Delete</i>
 			</a>
 
@@ -71,7 +71,7 @@
  			<div class="dropdownreply">
   			<button class="btn btn-success btn-sm">Add reply</button>
   			<div class="dropdownreply-content">
-  			<form name="replyId" th:object="${reply}" th:action="@{/comment/{id}/replies(id=${comment.commentid})}" method="get">
+  			<form name="replyId" th:object="${reply}" th:action="@{/{postid}/comment/{id}/replies#commentsection(id=${comment.commentid}, postid=${post.id})}" method="get">
 			<textarea id="reply" th:field="*{text}" rows="3" cols="65"></textarea>
 			<div style="clear: both; display: block; height: 5px;"></div>
 			<button class="btn btn-primary btn-sm" type="submit">Post reply</button>
@@ -96,7 +96,7 @@
 				<th th:text="${reply.creationdatetime.month}+' '+${reply.creationdatetime.dayOfMonth}+' '+${reply.creationdatetime.year}"></th>
 				</i>
 
-				<a class="btn btn-danger btn-sm" th:href="@{/}" method="get">
+				<a class="btn btn-danger btn-sm" th:href="@{/{postid}/comment/{commentid}/deletereply/{replyid}#commentsection(postid=${post.id}, commentid=${comment.commentid}, replyid=${reply.replyid})}" method="get">
 				<i class="fas fa-trash"> Reply Delete</i>
 				</a>
 

@@ -81,6 +81,15 @@
             <p class="text" th:text="${post.poststatus.status}"></p>
         </div>
 
+        <span th:if="${#aggregates.avg(post.ratings.![star])<1}">
+            <span class="stardefault">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </span>
+		</span>
 
         <span th:if="${#aggregates.avg(post.ratings.![star])>=1 && #aggregates.avg(post.ratings.![star])<2}">
 					<span class="starafter">
