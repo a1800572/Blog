@@ -111,7 +111,7 @@
 <div class="paginationposition">
 
 
-	<span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
+	<span th:text="${'Total Comments: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
 
 	<!--working-->
 	<a th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}" th:text=" First"></a>
