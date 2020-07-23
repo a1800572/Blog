@@ -98,15 +98,19 @@ public class PostController {
         return "redirect:../postlist";
     }
     
-    @RequestMapping(value = "/postlist/view/{id}", method = RequestMethod.GET)
-	public String Viewpost(@PathVariable("id") Long postId, Model model) {
+    @RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
+	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+    	Optional<Post> post = prepository.findById(postId);
+    	Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5));
+		Long totalitems = comments.getTotalElements();
+		Integer totalpages = comments.getTotalPages();
 		model.addAttribute("post", prepository.getPostById(postId));
-		// tämän avulla pystytään lisäämään html tiedostoon attribuutti kommentti
 		model.addAttribute("comment", new Comment());
-		// tämä voidaan poistaa myöhemmin
-		model.addAttribute("comments", crepository.findAll());
-
 		model.addAttribute("reply", new Reply());
+		model.addAttribute("currentpage", currentpage);
+		model.addAttribute("totalpages", totalpages);
+		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("comments", comments);
 
 		model.addAttribute("replies", rrepository.findAll());
 		
@@ -137,7 +141,7 @@ public class PostController {
 			prepository.save(post.get());
 			model.addAttribute("post", prepository.findById(id));
 			model.addAttribute("comments", crepository.findAll());
-			return "redirect:/postlist/view/{id}";
+			return "redirect:/postlist/view/{id}/page/1";
 	}
 
 	//voidaan poistaa kommentti olio
@@ -147,7 +151,7 @@ public class PostController {
 		Optional<Post> post = prepository.findById(id);
 			post.get().getComments().remove(comment.get());
 			crepository.deleteById(commentId);
-			return "redirect:/postlist/view/{postid}";
+			return "redirect:/postlist/view/{postid}/page/1";
 		}
 
 	//voidaan poistaa reply olio
@@ -157,7 +161,7 @@ public class PostController {
 		Optional<Reply> reply = rrepository.findById(replyId);
 		comment.get().getReplies().remove(reply.get());
 		rrepository.deleteById(replyId);
-		return "redirect:/postlist/view/{postid}";
+		return "redirect:/postlist/view/{postid}/page/1";
 	}
 
 
@@ -169,7 +173,7 @@ public class PostController {
 			crepository.save(comment.get());
 			model.addAttribute("comment", crepository.findById(commentId));
 			model.addAttribute("replies", rrepository.findAll());		
-			return "redirect:/postlist/view/{postid}";
+			return "redirect:/postlist/view/{postid}/page/1";
 	}
     
   //KESKEN!!!!!!!

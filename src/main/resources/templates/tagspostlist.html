@@ -52,7 +52,7 @@
                 <i class="fas fa-trash"> Delete</i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(id=${post.id})}">
+            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}">
                 <i class="fas fa-info-circle"> Post details</i>
             </a>
 
@@ -60,7 +60,7 @@
                 <i class="fas fa-tags"> Add/remove tags</i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}#commentsection(id=${post.id})}">
+            <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1#commentsection(id=${post.id})}">
                 <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
             </a>
 

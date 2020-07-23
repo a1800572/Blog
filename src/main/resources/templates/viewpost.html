@@ -54,7 +54,7 @@
 			<div style="clear: both; display: block; height: 5px;"></div>
 
 			<h1 id="commentsection">Comment section</h1>
-			<span th:each="comment,iterStat : ${post.comments}">
+			<span th:each="comment,iterStat : ${comments}">
 			<div class="commentreplybubble">
 
 			<div class="info">
@@ -107,5 +107,35 @@
 			<div style="clear: both; display: block; height: 5px;"></div>
 			</span>
 			</span>
+
+<div class="paginationposition">
+
+
+	<span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
+
+	<!--working-->
+	<a th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}" th:text=" First"></a>
+	<span th:unless="${currentpage > 1}" th:text=" First"></span>
+
+	<!--working-->
+	<a th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/{currentpage}(currentpage=${currentpage}-1, id=${post.id})}" th:text=" Previous"></a>
+	<span th:unless="${currentpage > 1}" th:text=" Previous"></span>
+
+	<!--working-->
+	<span th:each="i: ${#numbers.sequence(1,totalpages)}">
+		<a th:if="${i != currentpage}" th:href="@{/postlist/view/{id}/page/{pagenumber}(pagenumber=${i}, id=${post.id})}" th:text="${i}"></a>
+		<span th:unless="${i != currentpage}" th:text="${i}"></span>
+		</span>
+
+	<!--working-->
+	<a th:if="${currentpage < totalpages}" th:href="@{/postlist/view/{id}/page/{currentpage}(currentpage=${currentpage}+1, id=${post.id})}" th:text=" Next"></a>
+	<span th:unless="${currentpage < totalpages}" th:text=" Next"></span>
+
+	<!--working-->
+	<a th:if="${currentpage < totalpages}" th:href="@{/postlist/view/{id}/page/{totalpages}(totalpages=${totalpages}, id=${post.id})}" th:text=" Last"></a>
+	<span th:unless="${currentpage < totalpages}" th:text=" Last"></span>
+
+
+</div>
 </body>
 </html>
