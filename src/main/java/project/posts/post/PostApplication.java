@@ -62,9 +62,28 @@ public class PostApplication {
 			Post post9 = prepository.save(new Post(null ,"Pekka","päivitys 3","",psrepository.findByStatus("WIP").get(0)));
 			Post post10 = prepository.save(new Post(null ,"Toivo","blog post","moi",psrepository.findByStatus("Complete").get(0)));
 			Post post11 = prepository.save(new Post(null ,"Aino","resepti","",psrepository.findByStatus("WIP").get(0)));
+
 			prepository.save(new Post(null ,"Pekka","päivitys 4","",psrepository.findByStatus("WIP").get(0)));
 			prepository.save(new Post(null ,"Aino","päivitys 3","",psrepository.findByStatus("WIP").get(0)));
 			prepository.save(new Post(null ,"Pekka","päivitys 5","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Laura","päivä 1","",psrepository.findByStatus("Complete").get(0)));
+			prepository.save(new Post(null ,"Satu","viikko 7","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pinja","koulu","",psrepository.findByStatus("Complete").get(0)));
+			prepository.save(new Post(null ,"vilinä","ruokalista","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"jukka","muistilappu","",psrepository.findByStatus("Complete").get(0)));
+			prepository.save(new Post(null ,"juho","työhakemus","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 5","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Aino","päivitys 4","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 6","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 6","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Aino","päivitys 5","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 7","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 7","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Aino","päivitys 6","",psrepository.findByStatus("Complete").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 8","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 8","",psrepository.findByStatus("Complete").get(0)));
+			prepository.save(new Post(null ,"Aino","päivitys 7","",psrepository.findByStatus("WIP").get(0)));
+			prepository.save(new Post(null ,"Pekka","päivitys 9","",psrepository.findByStatus("Complete").get(0)));
 
 			//post ratings testi data
 			post1.getRatings().add(rating1);
