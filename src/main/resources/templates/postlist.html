@@ -186,10 +186,20 @@
 		<a th:if="${currentpage > 1}" th:href="@{/postlist/page/{currentpage}(currentpage=${currentpage}-1)}" th:text=" Previous"></a>
 		<span th:unless="${currentpage > 1}" th:text=" Previous"></span>
 
-		<!--working-->
-		<span th:each="i: ${#numbers.sequence(1,totalpages)}">
+		<span th:if="${currentpage - 2 > 1}">
+		<a th:href="@{/postlist/page/{currentpage}(currentpage=${currentpage}-3)}" th:text="..."></a>
+		</span>
+
+		<!--(currentpage - 2, (currentpage < totalpages) ? currentpage + 2 : totalpages, 1)-->
+		<span th:each="i: ${#numbers.sequence(currentpage - 2, totalpages > 2 + currentpage ? currentpage + 2 : totalpages, 1)}">
+            <span th:if="${i > 0}">
 		<a th:if="${i != currentpage}" th:href="@{/postlist/page/{pagenumber}(pagenumber=${i})}" th:text="${i}"></a>
+            </span>
 		<span th:unless="${i != currentpage}" th:text="${i}"></span>
+		</span>
+
+		<span th:if="${currentpage + 2 < totalpages}">
+		<a th:href="@{/postlist/page/{currentpage}(currentpage=${currentpage}+3)}" th:text="..."></a>
 		</span>
 
 		<!--working-->
