@@ -173,35 +173,47 @@
 
 </tr>
 
+    <div class="centered">
+        <span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages}"></span>
+    </div>
 <!--pagination start-->
+<div class="paginationcenter">
 <div class="paginationposition">
 
-
-    <span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages + ' - '}"></span>
-
     <!--working-->
-    <a th:if="${currentpage > 1}" th:href="@{/page/1/search(searchby=${searchby})}" th:text=" First"></a>
-    <span th:unless="${currentpage > 1}" th:text=" First"></span>
+    <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/page/1/search(searchby=${searchby})}" th:text=" First"></a>
+    <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
 
     <!--working-->
     <a th:if="${currentpage > 1}" th:href="@{/page/{currentpage}/search(currentpage=${currentpage}-1, searchby=${searchby})}" th:text=" Previous"></a>
-    <span th:unless="${currentpage > 1}" th:text=" Previous"></span>
+    <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
 
+    <!--...prev -->
+    <span th:if="${currentpage - 3 > 1}">
+		<a th:href="@{/page/{currentpage}/search(currentpage=${currentpage}-4, searchby=${searchby})}" th:text="..."></a>
+    </span>
     <!--working-->
-    <span th:each="i: ${#numbers.sequence(1,totalpages)}">
+    <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
+        <span th:if="${i > 0}">
 		<a th:if="${i != currentpage}" th:href="@{/page/{pagenumber}/search(pagenumber=${i}, searchby=${searchby})}" th:text="${i}"></a>
-		<span th:unless="${i != currentpage}" th:text="${i}"></span>
-		</span>
+        </span>
+		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+    </span>
+    <!--...next-->
+    <span th:if="${currentpage + 3 < totalpages}">
+		<a th:href="@{/page/{currentpage}/search(currentpage=${currentpage}+4, searchby=${searchby})}" th:text="..."></a>
+    </span>
 
     <!--working-->
     <a th:if="${currentpage < totalpages}" th:href="@{/page/{currentpage}/search(currentpage=${currentpage}+1, searchby=${searchby})}" th:text=" Next"></a>
-    <span th:unless="${currentpage < totalpages}" th:text=" Next"></span>
+    <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
 
     <!--working-->
-    <a th:if="${currentpage < totalpages}" th:href="@{/page/{totalpages}/search(totalpages=${totalpages}, searchby=${searchby})}" th:text=" Last"></a>
-    <span th:unless="${currentpage < totalpages}" th:text=" Last"></span>
+    <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/page/{totalpages}/search(totalpages=${totalpages}, searchby=${searchby})}" th:text=" Last"></a>
+    <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
 
 
+</div>
 </div>
 <!--pagination end-->
 </body>

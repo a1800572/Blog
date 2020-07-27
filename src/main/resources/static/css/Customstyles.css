@@ -307,8 +307,44 @@
         color: gold;
     }
 
-
-    .paginationposition {
+    .centered {
         text-align: center;
         font-size: 20px;
+    }
+
+    .paginationcenter {
+        text-align: center;
+    }
+
+    .paginationposition {
+        display: inline-block;
+    }
+
+    .paginationposition a {
+        float: left;
+        font-size: 20px;
+        padding: 8px 16px;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0;
+    }
+
+    .paginationposition a.active {
+        background-color: dodgerblue;
+        color: white;
+        border: 1px solid #ddd;
+    }
+
+    .paginationposition a:hover:not(.active) {
+        background-color: #ddd;
+    }
+
+    .paginationfirst {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .paginationlast {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
     }
