@@ -7,6 +7,17 @@
     width:1000px;
     margin-top: 5px;
     }
+
+    .postsbackground {
+        margin-top: 10px;
+        padding: 15px;
+        background-color: white;
+        box-shadow: 0 0 10px 1px darkgray;
+        border-radius: 2px;
+        width: 1030px;
+        margin: 0 auto;
+    }
+
     .replycontainer{
     color: black;
     background-color: gray;
@@ -239,7 +250,7 @@
 
     nav{
         width: 100%;
-        height: 84px;
+        height: 81px;
         background-color: #333;
         line-height: 80px;
     }
@@ -278,7 +289,10 @@
     }
 
     nav ul li a{
-        font-size: 25px;
+        font-size: 20px;
+        font-family: Helvetica;
+        font-weight: bold;
+        text-transform: uppercase;
         color: #fff;
         padding: 30px;
     }
