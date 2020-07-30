@@ -22,17 +22,15 @@
 				</ul>
 			</li>
 			<li>
-				<div class="dropdown">
 					<a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
 					<div id="myDropdown" class="dropdown-content" data-state="closed">
-						<form th:action="@{/page/1/search}" action="#" method="get" class="form-inline">
-							<div class="form-group mb-2">
-								<input type="text" class="form-control" name="searchby" placeholder="Search by title or description" />
-								<input type="submit" value="Search"  class="btn btn-primary"/>
-							</div>
+						<form class="search" th:action="@{/page/1/search}" action="#" method="get">
+
+							<input type="text" class="searchinput" name="searchby" placeholder="Search by title or description" />
+							<input type="submit" value="Search"  class="btn btn-primary"/>
+
 						</form>
 					</div>
-				</div>
 			</li>
 		</ul>
 	</nav>
