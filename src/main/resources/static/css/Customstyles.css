@@ -406,40 +406,42 @@
 
 
     .searchinput {
-        width: 200px;
+        width: 250px;
         font-size: 16px;
         padding: 10px;
-        outline: none;
         transition: 1.5s;
         height: 50px;
         float: left;
-        margin-top: 5px;
-        margin-left: 5px;
-        margin-bottom: 5px;
+        margin: 5px;
         border-bottom-left-radius: 5px;
         border-top-left-radius: 5px;
-        border: 1px solid black;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+        border: 1px solid gray;
     }
     .searchinput:focus {
         width: 500px;
+        border: 1px solid #0060df;
+        box-shadow: 0 0 0 1px #0060df, 0 0 0 3px lightsteelblue;
     }
 
     .search {
         float: right;
+        position: relative;
     }
 
     .searchbtn {
-        border: 1px solid black;
+        position: absolute;
+        top: 0;
+        right: 0;
         font-size: 16px;
         padding: 10px;
         font-weight: bold;
-        cursor: pointer;
-        outline: none;
-        height: 50px;
+        height: 48px;
         width: 90px;
-        margin-top: 5px;
-        margin-right: 5px;
-        margin-bottom: 5px;
+        margin-top: 6px;
+        margin-right: 6px;
+        margin-bottom: 6px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
     }
