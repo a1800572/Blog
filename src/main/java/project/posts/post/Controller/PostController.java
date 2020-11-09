@@ -39,6 +39,9 @@ public class PostController {
 
 	@Autowired
 	private RatingRepository rarepository;
+
+	@Autowired
+	private LinkRepository lrepository;
 	
 	//näyttää kaikki postaukset ekalla sivulla
     @RequestMapping(value="/postlist")
@@ -251,7 +254,8 @@ public class PostController {
 
 	//root
 	@RequestMapping(value = "/")
-	public String index(){
+	public String index(Model model){
+        model.addAttribute("links", lrepository.findAll());
     	return "index";
 	}
 
@@ -273,6 +277,20 @@ public class PostController {
 		model.addAttribute("post", prepository.findById(id));
 		model.addAttribute("ratings", rarepository.findAll());
 		return "redirect:/postlist";
+	}
+
+	//luodaan kinkki olio index sivulle
+	@RequestMapping(value = "/addlink")
+	public String addLink(Model model){
+		model.addAttribute("link", new Link());
+		return "addlink";
+	}
+
+	//tallennetaan linkki olio
+	@RequestMapping(value = "/savelink", method=RequestMethod.POST)
+	public String savelink(Link link) {
+    	lrepository.save(link);
+		return "redirect:/";
 	}
 
 }
