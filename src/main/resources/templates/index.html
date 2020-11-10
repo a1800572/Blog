@@ -39,15 +39,18 @@
     <div class="linkbar">
         <!--testilinkki-->
         <div class="link">
+            <div class="thumbnail"></div>
             <a class="linktext" href="https://www.youtube.com/">Youtube</a>
         </div>
         <!--testilinkki-->
         <div class="link">
+            <div class="thumbnail"></div>
             <a class="linktext" href="https://www.is.fi/">Ilta-sanomat</a>
         </div>
 
         <tr th:each = "link : ${links}">
         <div class="link">
+            <div class="thumbnail"></div>
         <a class="linktext" th:text="${link.linkname}" th:href="${link.url}"></a>
         </div>
         </tr>

@@ -391,19 +391,36 @@
     }
 
     .link {
-        margin: 5px;
+        margin-left: 5px;
+        margin-right: 5px;
+        margin-top: 22.5px;
+        margin-bottom: 22.5px;
+
         padding: 5px;
         font-size: 100%;
         font-weight: normal;
         text-shadow: 1px 1px 2px #222;
         background-color: #25A8E0;
         box-shadow: 1px 1px 3px #777777;
+        position: relative;
+        text-align: center;
+        height: 40px;
     }
 
     .linktext {
         color: white;
     }
 
+    .thumbnail {
+        background-color: gray;
+        position: absolute;
+        height: 55px;
+        width: 55px;
+        top: -7.5px;
+        left: 10px;
+        border-radius: 5px;
+        border: solid 2px black;
+    }
 
     .searchinput {
         width: 250px;
