@@ -28,9 +28,13 @@ public class PostApplication {
 	 }
 	
 	@Bean
-	public CommandLineRunner blogDemo(PostRepository prepository, TagRepository trepository, PostStatusRepository psrepository, RatingRepository rarepository, CommentRepository crepository) {
+	public CommandLineRunner blogDemo(PostRepository prepository, TagRepository trepository, PostStatusRepository psrepository, RatingRepository rarepository, CommentRepository crepository, LinkRepository lrepository) {
 		return (args) -> {
 			log.info("testdata");
+
+			//testi linkit
+			lrepository.save(new Link("Iltasanomat","https://www.is.fi/","ISlogo.png"));
+			lrepository.save(new Link("Youtube","https://www.youtube.com/","YTB.png"));
 
 			//testi tagit
 			Tag tag1 = trepository.save(new Tag("cartoon"));

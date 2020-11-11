@@ -14,10 +14,11 @@ public class Link {
 
     public Link() {}
 
-    public Link(String linkname, String url){
+    public Link(String linkname, String url, String thumbnailimg){
         super();
         this.linkname=linkname;
         this.url=url;
+        this.thumbnailimg=thumbnailimg;
     }
 
     public Long getLinkid() {
