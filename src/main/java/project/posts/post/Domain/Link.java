@@ -10,6 +10,7 @@ public class Link {
     private Long linkid;
     private String linkname;
     private String url;
+    private String thumbnailimg;
 
     public Link() {}
 
@@ -41,5 +42,13 @@ public class Link {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getThumbnailimg() {
+        return thumbnailimg;
+    }
+
+    public void setThumbnailimg(String thumbnailimg) {
+        this.thumbnailimg = thumbnailimg;
     }
 }

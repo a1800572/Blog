@@ -8,13 +8,14 @@
 <body>
 <h1>Add links to index</h1>
 <div>
-    <form th:object="${link}" th:action="@{/savelink}" action="#" method="post">
+    <form th:object="${link}" th:action="@{/savelink}" action="#" method="post" enctype="multipart/form-data">
         <label for="linkname">Linkname: </label>
         <input type="text" id="linkname" th:field="*{linkname}" />
         <div style="clear: both; display: block; height: 10px;"></div>
         <label for="url">URL: </label>
         <input type="text" id="url" th:field="*{url}" />
         <div style="clear: both; display: block; height: 10px;"></div>
+        <input type="file" name="file" />
         <input type="submit" value="Save"></input>
     </form>
 </div>

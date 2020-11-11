@@ -288,8 +288,25 @@ public class PostController {
 
 	//tallennetaan linkki olio
 	@RequestMapping(value = "/savelink", method=RequestMethod.POST)
-	public String savelink(Link link) {
-    	lrepository.save(link);
+	public String savePost(MultipartFile file, Link link, Model model) {
+		if (!file.isEmpty()) {
+			try {
+				String thumbnailimgname = file.getOriginalFilename();
+				link.setThumbnailimg(thumbnailimgname);
+				String dirLocation = "src\\main\\resources\\static\\thumbnailimages\\";
+				if (!new File(dirLocation).exists()) {
+					File filea = new File(dirLocation);
+					filea.mkdirs();
+				}
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(dirLocation + new File(thumbnailimgname)));
+				bufferedOutputStream.write(bytes);
+				bufferedOutputStream.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		lrepository.save(link);
 		return "redirect:/";
 	}
 

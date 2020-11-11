@@ -50,7 +50,15 @@
 
         <tr th:each = "link : ${links}">
         <div class="link">
-            <div class="thumbnail"></div>
+
+            <span th:if="${link.thumbnailimg != null}">
+    		<img class="thumbnail" th:src="@{${'/thumbnailimages/' + link.thumbnailimg}}" alt="Image not available"/>
+    		</span>
+
+            <span th:if="${link.thumbnailimg == null}">
+            <div class="thumbnail" th:text="'No image'"></div>
+    		</span>
+
         <a class="linktext" th:text="${link.linkname}" th:href="${link.url}"></a>
         </div>
         </tr>
