@@ -133,8 +133,8 @@ public class PostController {
 		return "viewpost";
     }
     // paginate posts by tag
-    @RequestMapping("/page/{pagenumber}/tag/{id}")
-	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+    @RequestMapping("/category/{categoryid}/page/{pagenumber}/tag/{id}")
+	public String posttag(@PathVariable("categoryid") Long categoryId, @PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
 		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
 		Long totalitems = posts.getTotalElements();
@@ -146,6 +146,7 @@ public class PostController {
 		model.addAttribute("tagid", tagId);
 		model.addAttribute("name", name);
 		model.addAttribute("posts", posts);
+        model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
         model.addAttribute("categories", carepository.findAll());
     	return "tagspostlist";
     }

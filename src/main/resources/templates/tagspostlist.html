@@ -62,7 +62,7 @@
             </i>
 
 
-            <a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">
+            <a class="btn btn-danger btn-sm" th:href="@{/category/{categoryid}/deletepost/{postid}(categoryid=${category.categoryid} ,postid=${post.id})}">
                 <i class="fas fa-trash"> Delete</i>
             </a>
 
@@ -70,7 +70,7 @@
                 <i class="fas fa-info-circle"> Post details</i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">
+            <a class="btn btn-primary btn-sm" th:href="@{/{categoryid}/addPostTag/{id}(categoryid=${category.categoryid}, id=${post.id})}">
                 <i class="fas fa-tags"> Add/remove tags</i>
             </a>
 
@@ -78,11 +78,11 @@
                 <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">
+            <a class="btn btn-primary btn-sm" th:href="@{/{categoryid}/editpost/{id}(categoryid=${category.categoryid} ,id=${post.id})}">
                 <i class="fas fa-pen"> Edit post</i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/addPostrating/{id}(id=${post.id})}">
+            <a class="btn btn-primary btn-sm" th:href="@{/category/{categoryid}/post/{id}/rating(categoryid=${category.categoryid}, id=${post.id})}">
                 <i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
             </a>
 
@@ -176,7 +176,7 @@
         <div style="clear: both; display: block; height: 5px;"></div>
 
         <span th:each="tag,iterStat : ${post.tags}">
-    		<a class="tag" th:href="@{/page/{pagenumber}/tag/{id}(id=${tag.tagid}, pagenumber=${currentpage})}">
+    		<a class="tag" th:href="@{/category/{categoryid}/page/{pagenumber}/tag/{id}( categoryid=${category.categoryid}, id=${tag.tagid}, pagenumber=${currentpage})}">
 			<span th:text="${tag.name}"/>
 			</a>
 			</span>
@@ -193,31 +193,31 @@
 <div class="paginationcenter">
 <div class="paginationposition">
     <!--working-->
-    <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/page/1/tag/{id}(id=${tagid})}" th:text=" First"></a>
+    <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/{categoryid}/page/1/tag/{id}(categoryid=${category.categoryid}, id=${tagid})}" th:text=" First"></a>
     <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
     <!--working-->
-    <a th:if="${currentpage > 1}" th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}-1, id=${tagid})}" th:text=" Previous"></a>
+    <a th:if="${currentpage > 1}" th:href="@{/category/{categoryid}/page/{currentpage}/tag/{id}(categoryid=${category.categoryid}, currentpage=${currentpage}-1, id=${tagid})}" th:text=" Previous"></a>
     <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
     <!--...first-->
     <span th:if="${currentpage - 3 > 1}">
-		<a th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}-4, id=${tagid})}" th:text="..."></a>
+		<a th:href="@{/category/{categoryid}/page/{currentpage}/tag/{id}(categoryid=${category.categoryid}, currentpage=${currentpage}-4, id=${tagid})}" th:text="..."></a>
 	</span>
     <!--working-->
     <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
         <span th:if="${i > 0}">
-		<a th:if="${i != currentpage}" th:href="@{/page/{pagenumber}/tag/{id}(pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
+		<a th:if="${i != currentpage}" th:href="@{/category/{categoryid}/page/{pagenumber}/tag/{id}(categoryid=${category.categoryid}, pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
         </span>
 		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
 	</span>
     <!--...last-->
     <span th:if="${currentpage + 3 < totalpages}">
-		<a th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}+4, id=${tagid})}" th:text="..."></a>
+		<a th:href="@{/category/{categoryid}/page/{currentpage}/tag/{id}(categoryid=${category.categoryid}, currentpage=${currentpage}+4, id=${tagid})}" th:text="..."></a>
 	</span>
     <!--working-->
-    <a th:if="${currentpage < totalpages}" th:href="@{/page/{currentpage}/tag/{id}(currentpage=${currentpage}+1, id=${tagid})}" th:text=" Next"></a>
+    <a th:if="${currentpage < totalpages}" th:href="@{/category/{categoryid}/page/{currentpage}/tag/{id}(categoryid=${category.categoryid}, currentpage=${currentpage}+1, id=${tagid})}" th:text=" Next"></a>
     <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
     <!--working-->
-    <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/page/{totalpages}/tag/{id}(totalpages=${totalpages}, id=${tagid})}" th:text=" Last"></a>
+    <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/{categoryid}/page/{totalpages}/tag/{id}(categoryid=${category.categoryid}, totalpages=${totalpages}, id=${tagid})}" th:text=" Last"></a>
     <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
 </div>
 </div>

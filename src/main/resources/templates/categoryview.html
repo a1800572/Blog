@@ -177,7 +177,7 @@
             <div style="clear: both; display: block; height: 5px;"></div>
 
             <span th:each="tag,iterStat : ${post.tags}">
-    		<a class="tag" th:href="@{/page/1/tag/{id}(id=${tag.tagid})}">
+    		<a class="tag" th:href="@{/category/{categoryid}/page/1/tag/{id}(categoryid=${category.categoryid} ,id=${tag.tagid})}">
 			<span th:text="${tag.name}"/>
 			</a>
 			</span>
