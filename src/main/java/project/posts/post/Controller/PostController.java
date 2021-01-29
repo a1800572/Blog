@@ -42,6 +42,9 @@ public class PostController {
 
 	@Autowired
 	private LinkRepository lrepository;
+
+	@Autowired
+	private CategoryRepository carepository;
 	
 	//näyttää kaikki postaukset ekalla sivulla
     @RequestMapping(value="/postlist")
@@ -51,6 +54,8 @@ public class PostController {
     }
 
     //kaikki postaukset paginoituna
+	//voidaan poistaa myöhemmin
+	//korvaava url /category/view/{id}/page/{pagenumber}
     @RequestMapping(value="/postlist/page/{pagenumber}")
 	public String listByPage(Model model, @PathVariable("pagenumber") Integer currentpage){
 		Page<Post> pageposts = prepository.findAll(PageRequest.of(currentpage-1,4));
@@ -64,13 +69,17 @@ public class PostController {
 	}
   
     //uudelleen ohjaa sivulle jossa voi tehdä postauksen
+	//voidaan poistaa myöhemmin
+	//korvaava url /addcategorypost/{id}
     @RequestMapping(value = "/addpost")
     public String addPost(Model model){
     	model.addAttribute("post", new Post());
     	model.addAttribute("poststatuses", psrepository.findAll());
         return "addpost";
     }     
-    
+
+    //voidaan poistaa myöhemmin
+	//korvaava url /category/{id}/posts
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String savePost(MultipartFile file, Post post, Model model) {
     	if(!file.isEmpty()){
@@ -93,12 +102,16 @@ public class PostController {
     	prepository.save(post);
     	model.addAttribute("post", post);
         return "redirect:postlist";
-    }    
+    }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deletePost(@PathVariable("id") Long postId, Model model) {
+    //poistetaan post olio
+    @RequestMapping(value = "/category/{categoryid}/deletepost/{postid}", method = RequestMethod.GET)
+    public String deletePost(@PathVariable("categoryid") Long categoryId, @PathVariable("postid") Long postId, Model model) {
+        Optional<Post> post = prepository.findById(postId);
+        Optional<Category> category = carepository.findById(categoryId);
+        category.get().getPosts().remove(post.get());
     	prepository.deleteById(postId);
-        return "redirect:../postlist";
+        return "redirect:/category/view/{categoryid}/page/1";
     }
     
     @RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
@@ -116,7 +129,7 @@ public class PostController {
 		model.addAttribute("comments", comments);
 
 		model.addAttribute("replies", rrepository.findAll());
-		
+		model.addAttribute("categories", carepository.findAll());
 		return "viewpost";
     }
     // paginate posts by tag
@@ -133,6 +146,7 @@ public class PostController {
 		model.addAttribute("tagid", tagId);
 		model.addAttribute("name", name);
 		model.addAttribute("posts", posts);
+        model.addAttribute("categories", carepository.findAll());
     	return "tagspostlist";
     }
     
@@ -180,16 +194,17 @@ public class PostController {
 	}
     
   //KESKEN!!!!!!!
-    @RequestMapping(value = "addPostTag/{id}", method = RequestMethod.GET)
-    public String addTagtopost(@PathVariable("id") Long postId, Model model){
+    @RequestMapping(value = "/{categoryid}/addPostTag/{id}", method = RequestMethod.GET)
+    public String addTagtopost(@PathVariable("id") Long postId, @PathVariable("categoryid") Long categoryId, Model model){
     		model.addAttribute("tags", trepository.findAll());
     		model.addAttribute("post", prepository.findById(postId).get());
+            model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
     		return "addPostTag";
     }
     
     //Kesken!!!!
-    @RequestMapping(value="/post/{id}/tags", method=RequestMethod.GET)
-	public String postAddTag(@RequestParam(value="action", required=true) String action, @PathVariable Long id, @RequestParam Long tagId, Model model) {
+    @RequestMapping(value="/{categoryid}/post/{id}/tags", method=RequestMethod.GET)
+	public String postAddTag(@RequestParam(value="action", required=true) String action, @PathVariable("id") Long id, @PathVariable("categoryid") Long categoryId, @RequestParam Long tagId, Model model) {
     	Optional<Tag> tag = trepository.findById(tagId);
 		Optional<Post> post = prepository.findById(id);
 
@@ -200,7 +215,7 @@ public class PostController {
 			prepository.save(post.get());
 			model.addAttribute("post", prepository.findById(id));
 			model.addAttribute("tags", trepository.findAll());
-			return "redirect:/addPostTag/{id}";
+			return "redirect:/{categoryid}/addPostTag/{id}";
 		}
 		if (post.isPresent() && action.equalsIgnoreCase("remove tag")) {
 				post.get().getTags().remove(tag.get());
@@ -208,7 +223,7 @@ public class PostController {
 			//korjaa jos mahdollista
 			model.addAttribute("post", prepository.findById(id));
 			model.addAttribute("tags", trepository.findAll());
-			return "redirect:/addPostTag/{id}";
+			return "redirect:/{categoryid}/addPostTag/{id}";
 		}
 		return "redirect:/addPostTag/{id}";
 		
@@ -221,7 +236,7 @@ public class PostController {
         return "addtag";
     }     
 
-    //tallennetaan luotu olio
+    //tallennetaan luotu tag olio
     @RequestMapping(value = "/savetag", method = RequestMethod.POST)
     public String saveTag(Tag tag){
         trepository.save(tag);
@@ -242,12 +257,15 @@ public class PostController {
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("searchby", searchby);
 		model.addAttribute("posts", pageposts);
+
+        model.addAttribute("categories", carepository.findAll());
 		return "searchresults";
 	}
 
-	@RequestMapping(value = "/editpost/{id}")
-	public String editpost(@PathVariable("id") Long postId, Model model){
+	@RequestMapping(value = "/{categoryid}/editpost/{id}")
+	public String editpost(@PathVariable("id") Long postId, @PathVariable("categoryid") Long categoryId, Model model){
 		model.addAttribute("post", prepository.findById(postId));
+        model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
 		model.addAttribute("poststatuses", psrepository.findAll());
     	return "editpost";
 	}
@@ -256,19 +274,21 @@ public class PostController {
 	@RequestMapping(value = "/")
 	public String index(Model model){
         model.addAttribute("links", lrepository.findAll());
+		model.addAttribute("categories", carepository.findAll());
     	return "index";
 	}
 
 	//luodaan rating olio
-	@RequestMapping(value = "/addPostrating/{id}")
-	public String addRating(@PathVariable("id") Long postId, Model model){
+	@RequestMapping(value = "/category/{categoryid}/post/{id}/rating")
+	public String addRating(@PathVariable("categoryid") Long categoryId, @PathVariable("id") Long postId, Model model){
 		model.addAttribute("post", prepository.getPostById(postId));
+		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
 		model.addAttribute("rating", new Rating());
 		return "addrating";
 	}
 
 	//tallennetaan rating olio post oliolle
-	@RequestMapping(value="/post/{id}/ratings", method=RequestMethod.GET)
+	@RequestMapping(value="/category/{categoryid}/savepost/{id}/rating", method=RequestMethod.POST)
 	public String postaddrating(@PathVariable("id") Long id, Model model, Rating rating) {
 		Optional<Post> post = prepository.findById(id);
 		if (!post.get().hasRating(rating)) {
@@ -276,7 +296,7 @@ public class PostController {
 		prepository.save(post.get());
 		model.addAttribute("post", prepository.findById(id));
 		model.addAttribute("ratings", rarepository.findAll());
-		return "redirect:/postlist";
+		return "redirect:/category/view/{categoryid}/page/1";
 	}
 
 	//luodaan kinkki olio index sivulle
@@ -309,5 +329,76 @@ public class PostController {
 		lrepository.save(link);
 		return "redirect:/";
 	}
+
+    @RequestMapping(value = "/addcategory")
+    public String addCategory(Model model){
+        model.addAttribute("category", new Category());
+        return "addcategory";
+    }
+
+	@RequestMapping(value = "/savecategory", method=RequestMethod.POST)
+	public String saveCategory(Category category) {
+		carepository.save(category);
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "/category/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
+	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+		Optional<Category> category = carepository.findById(categoryId);
+		Page<Post> posts = prepository.findByCategories(category.get(), PageRequest.of(currentpage-1,4));
+		Long totalitems = posts.getTotalElements();
+		Integer totalpages = posts.getTotalPages();
+		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
+		model.addAttribute("categories", carepository.findAll());
+		model.addAttribute("currentpage", currentpage);
+		model.addAttribute("totalpages", totalpages);
+		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("posts", posts);
+		return "categoryview";
+	}
+
+	@RequestMapping(value = "/addcategorypost/{id}")
+	public String addCategoryPost(@PathVariable("id") Long categoryId, Model model){
+		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
+		model.addAttribute("post", new Post());
+		model.addAttribute("poststatuses", psrepository.findAll());
+		return "addcategorypost";
+	}
+
+	@RequestMapping(value="/category/{id}/posts", method=RequestMethod.POST)
+	public String categoryaddpost(@PathVariable("id") Long categoryId, Model model, Post post, MultipartFile file) {
+		Optional<Category> category = carepository.findById(categoryId);
+		if(!file.isEmpty()){
+			try {
+				String fileName = file.getOriginalFilename();
+				post.setImagename(fileName);
+				String dirLocation ="src\\main\\resources\\static\\temp\\";
+				if(!new File(dirLocation).exists()){
+					File filea = new File(dirLocation);
+					filea.mkdirs();
+				}
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(dirLocation+new File(fileName)));
+				bufferedOutputStream.write(bytes);
+				bufferedOutputStream.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		//for adding
+		//jos categorialla ei ole postausta
+		if (!category.get().hasPost(post)) {
+			category.get().getPosts().add(post);
+			carepository.save(category.get());}
+		//for updating
+		//jos categorialla on postaus
+		if (category.get().hasPost(post)) {
+			prepository.save(post);}
+
+		model.addAttribute("category", carepository.findById(categoryId));
+		model.addAttribute("posts", prepository.findAll());
+		return "redirect:/category/view/{id}/page/1";
+	}
+
 
 }

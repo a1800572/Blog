@@ -68,8 +68,9 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name="poststatusid")
 	private PostStatus poststatus;
-    
-    
+
+	@ManyToMany(mappedBy = "posts")
+	private List<Category> categories = new ArrayList<>();
     
 
     public Post() {}
@@ -179,6 +180,14 @@ public class Post {
 
 	public void setCreationdatetime(LocalDateTime creationdatetime) {
 		this.creationdatetime = creationdatetime;
+	}
+
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 	public boolean hasComment(Comment comment) {

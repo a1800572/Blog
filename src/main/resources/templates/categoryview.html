@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Category posts</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css"rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/all.css" th:href="@{/css/all.css}" />
+    <link type="text/css" rel="stylesheet" href="/css/Customstyles.css" th:href="@{/css/Customstyles.css}" />
+</head>
+<body>
+
+<div id="main">
+    <nav>
+        <ul>
+            <li><a th:href="@{/}"><i class="fa fa-home"></i> Kotisivu</a></li>
+            <li><a th:href="@{/postlist}"><i class="fas fa-pen"></i> Postlist</a></li>
+            <li><a href="#">Actions</a>
+                <ul>
+                    <li><a th:href="@{/addlink}">Add link</a></li>
+                    <li><a th:href="@{/addcategory}">Add Categ</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#">Categories</a>
+                <ul>
+                    <li th:each = "category : ${categories}">
+                        <a th:href="@{/category/view/{id}/page/1(id=${category.categoryid})}" th:text="${category.categoryname}"></a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
+                <div id="myDropdown" class="dropdown-content" data-state="closed">
+                    <form class="search" th:action="@{/page/1/search}" action="#" method="get">
+
+                        <input type="text" class="searchinput" name="searchby" placeholder="Search by title or description" />
+                        <input type="submit" value="Search" class="searchbtn"/>
+
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script type="text/javascript" th:src="@{/js/actions.js}"></script>
+
+<h1 th:text="'All posts in category: ' + ${category.categoryname}"></h1>
+
+<a class="btn btn-success btn-sm" th:href="@{/addcategorypost/{id}(id=${category.categoryid})}">Add Category Post</a>
+<a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a>
+
+
+<div class="postsbackground">
+    <tr th:each = "post : ${posts}">
+        <div class="container">
+            <div class="info">
+
+                <i class="fas fa-clock">
+                    <th th:text="${post.creationdatetime.month}+' '+${post.creationdatetime.dayOfMonth}+' '+${post.creationdatetime.year}"></th>
+                    <th th:text="${post.updatedatetime.month}+' '+${post.updatedatetime.dayOfMonth}+' '+${post.updatedatetime.year}"></th>
+                </i>
+
+
+                <a class="btn btn-danger btn-sm" th:href="@{/category/{categoryid}/deletepost/{postid}(categoryid=${category.categoryid}, postid=${post.id})}">
+                    <i class="fas fa-trash"> Delete</i>
+                </a>
+
+                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}">
+                    <i class="fas fa-info-circle"> Post details</i>
+                </a>
+
+                <a class="btn btn-primary btn-sm" th:href="@{/{categoryid}/addPostTag/{id}(categoryid=${category.categoryid}, id=${post.id})}">
+                    <i class="fas fa-tags"> Add/remove tags</i>
+                </a>
+
+                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1#commentsection(id=${post.id})}">
+                    <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
+                </a>
+
+                <a class="btn btn-primary btn-sm" th:href="@{/{categoryid}/editpost/{id}(categoryid=${category.categoryid}, id=${post.id})}">
+                    <i class="fas fa-pen"> Edit post</i>
+                </a>
+
+                <a class="btn btn-primary btn-sm" th:href="@{/category/{categoryid}/post/{id}/rating(categoryid=${category.categoryid}, id=${post.id})}">
+                    <i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
+                </a>
+
+            </div>
+            <div>
+                <p class="text" th:text="${post.title}"></p>
+                <p class="text" th:text="${post.description}"></p>
+                <p class="text" th:text="${post.content}"></p>
+                <p class="text" th:text="${post.imagename}"></p>
+                <p class="text" th:text="${post.poststatus.status}"></p>
+            </div>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])<1}">
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])>=1 && #aggregates.avg(post.ratings.![star])<2}">
+					<span class="starafter">
+					<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])>=2 && #aggregates.avg(post.ratings.![star])<3}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])>=3 && #aggregates.avg(post.ratings.![star])<4}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])>=4 && #aggregates.avg(post.ratings.![star])<5}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+					<span class="stardefault">
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])==5}">
+					<span class="starafter">
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+						<i class="fa fa-star"></i>
+					</span>
+				</span>
+
+            <span th:if="${#aggregates.avg(post.ratings.![star])} != null" th:text="${'Average('+#aggregates.avg(post.ratings.![star])+')'}"></span>
+            <span th:if="${#aggregates.avg(post.ratings.![star])} == null" th:text="${'Average(' + 0 + ')'}"></span>
+
+            <!-- tämä on kesken -->
+            <!-- jos kuvan nimi ei ole null näytä kuva vaihtoehtoisesti kirjoita alt viesti -->
+
+            <span th:if="${post.imagename != null}">
+    		<img width="150" th:src="@{${'/temp/' + post.imagename}}" alt="file is not image file"/>
+    		</span>
+            <br>
+            <div style="clear: both; display: block; height: 5px;"></div>
+
+            <span th:each="tag,iterStat : ${post.tags}">
+    		<a class="tag" th:href="@{/page/1/tag/{id}(id=${tag.tagid})}">
+			<span th:text="${tag.name}"/>
+			</a>
+			</span>
+
+        </div>
+        <div style="clear: both; display: block; height: 5px;"></div>
+
+    </tr>
+
+    <!--pagination start-->
+    <div class="centered">
+        <span th:text="${'Total Posts: ' + totalitems + ' - Page ' + currentpage + ' of ' + totalpages}"></span>
+    </div>
+
+    <div class="paginationcenter">
+        <div class="paginationposition">
+            <!--working-->
+            <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/1(id=${category.categoryid})}" th:text=" First"></a>
+            <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
+            <!--working-->
+            <a th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-1)}" th:text=" Previous"></a>
+            <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
+            <!--...start -->
+            <span th:if="${currentpage - 3 > 1}">
+		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-4, id=${category.categoryid})}" th:text="..."></a>
+		</span>
+            <!--working-->
+            <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
+            <span th:if="${i > 0}">
+		<a th:if="${i != currentpage}" th:href="@{/category/view/{id}/page/{pagenumber}(pagenumber=${i}, id=${category.categoryid})}" th:text="${i}"></a>
+            </span>
+		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+		</span>
+            <!--...last-->
+            <span th:if="${currentpage + 3 < totalpages}">
+		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+4, id=${category.categoryid})}" th:text="..."></a>
+		</span>
+            <!--working-->
+            <a th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+1, id=${category.categoryid})}" th:text=" Next"></a>
+            <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
+            <!--working-->
+            <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{totalpages}(totalpages=${totalpages}, id=${category.categoryid})}" th:text=" Last"></a>
+            <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+        </div>
+    </div>
+    <!--pagination end-->
+</div>
+</body>
+</html>

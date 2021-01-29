@@ -50,7 +50,7 @@
 <h1>How would you rate this post</h1>
 
 <div class="stars">
-    <form th:object="${rating}" th:action="@{/post/{id}/ratings(id=${post.id})}" action="#" method="get">
+    <form th:object="${rating}" th:action="@{/category/{categoryid}/savepost/{id}/rating(categoryid=${category.categoryid}, id=${post.id})}" action="#" method="post">
 
         <input class="star star-5" id="star-5" type="radio" name="star" th:field="*{star}" th:value="5" />
         <label class="star star-5" for="star-5"></label>

@@ -3,7 +3,7 @@
 <head>
 	<title>tag test</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link type="text/css" rel="stylesheet" th:href="@{../css/bootstrap.min.css}" />	
+	<link type="text/css" rel="stylesheet" th:href="@{../../css/bootstrap.min.css}" />
 </head>
 <body>
 <div class="container">
@@ -17,7 +17,7 @@
 	<p>count of tags attached to this post</p>
 	<p th:text="${#lists.size(post.tags)}"></p>
 
-	<form th:action="@{/post/{id}/tags(id=${post.id})}" method="get" enctype="multipart/form-data" >
+	<form th:action="@{/{categoryid}/post/{id}/tags(categoryid=${category.categoryid},id=${post.id})}" method="get" enctype="multipart/form-data" >
 	
 			
 			<div class="col-md-6">
@@ -33,7 +33,7 @@
 			
 			<br>
 			<div style="clear: both; display: block; height: 5px;"></div>
-			<a class="btn btn-success" href="/postlist">finish</a>
+			<a class="btn btn-success" th:href="@{/category/view/{categoryid}/page/1(categoryid=${category.categoryid})}">finish</a>
 			</div>
 			</div>
 </div>

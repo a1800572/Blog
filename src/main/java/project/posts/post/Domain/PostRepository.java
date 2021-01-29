@@ -21,4 +21,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     Page<Post> findByTags(Tag tag, Pageable pageable);
 
     Page<Post> findAll(Pageable pageable);
+
+    Page<Post> findByCategories(Category category, Pageable pageable);
 }

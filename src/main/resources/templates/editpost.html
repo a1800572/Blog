@@ -3,12 +3,12 @@
 <head>
 	<title>Edit post details</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link type="text/css"rel="stylesheet" href="css/bootstrap.min.css" th:href="@{../css/bootstrap.min.css}" />
+	<link type="text/css"rel="stylesheet" href="css/bootstrap.min.css" th:href="@{../../css/bootstrap.min.css}" />
 </head>
 <body>
 <h1>Edit post details</h1>
 <div>
-	<form th:object="${post}" th:action="@{../save}" action="#" method="post" enctype="multipart/form-data">
+	<form th:object="${post}" th:action="@{/category/{id}/posts(id=${category.categoryid})}" action="#" method="post" enctype="multipart/form-data">
 		<input type="hidden" th:field="*{id}"/>
 		<label for="title">Title</label>
 		<input type="text" id="title" th:field="*{title}" />
