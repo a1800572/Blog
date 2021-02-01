@@ -18,6 +18,7 @@
                 <ul>
                     <li><a th:href="@{/addlink}">Add link</a></li>
                     <li><a th:href="@{/addcategory}">Add Categ</a></li>
+                    <li><a th:href="@{/addtag}">Add tag</a></li>
                 </ul>
             </li>
 
@@ -47,9 +48,6 @@
 
 <h1 th:text="'Search results for keyword: ' + ${searchby}"></h1>
 
-<a class="btn btn-success btn-sm" href="/addpost">Add Post</a>
-<a class="btn btn-primary btn-sm" href="/addtag">Add new tags</a>
-
 <div class="postsbackground">
 <tr th:each = "post : ${posts}">
     <div class="container">
@@ -60,29 +58,12 @@
                 <th th:text="${post.updatedatetime.month}+' '+${post.updatedatetime.dayOfMonth}+' '+${post.updatedatetime.year}"></th>
             </i>
 
-
-            <a class="btn btn-danger btn-sm" th:href="@{/delete/{id}(id=${post.id})}">
-                <i class="fas fa-trash"> Delete</i>
-            </a>
-
             <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}">
                 <i class="fas fa-info-circle"> Post details</i>
             </a>
 
-            <a class="btn btn-primary btn-sm" th:href="@{/addPostTag/{id}(id=${post.id})}">
-                <i class="fas fa-tags"> Add/remove tags</i>
-            </a>
-
             <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1#commentsection(id=${post.id})}">
                 <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
-            </a>
-
-            <a class="btn btn-primary btn-sm" th:href="@{/editpost/{id}(id=${post.id})}">
-                <i class="fas fa-pen"> Edit post</i>
-            </a>
-
-            <a class="btn btn-primary btn-sm" th:href="@{/addPostrating/{id}(id=${post.id})}">
-                <i class="fa fa-star" th:text="${' '+#lists.size(post.ratings)+' Ratings'}"></i>
             </a>
 
         </div>

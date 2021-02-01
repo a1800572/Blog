@@ -24,13 +24,13 @@ import project.posts.post.Domain.*;
 public class PostController {
 	@Autowired
 	private PostRepository prepository;
-	
+
 	@Autowired
 	private CommentRepository crepository;
-	
+
 	@Autowired
 	private ReplyRepository rrepository;
-	
+
 	@Autowired
 	private TagRepository trepository;
 
@@ -45,18 +45,18 @@ public class PostController {
 
 	@Autowired
 	private CategoryRepository carepository;
-	
+
 	//näyttää kaikki postaukset ekalla sivulla
-    @RequestMapping(value="/postlist")
-    public String postList(Model model) {
+	@RequestMapping(value="/postlist")
+	public String postList(Model model) {
 		listByPage(model,1);
 		return "postlist";
-    }
+	}
 
-    //kaikki postaukset paginoituna
+	//kaikki postaukset paginoituna
 	//voidaan poistaa myöhemmin
 	//korvaava url /category/view/{id}/page/{pagenumber}
-    @RequestMapping(value="/postlist/page/{pagenumber}")
+	@RequestMapping(value="/postlist/page/{pagenumber}")
 	public String listByPage(Model model, @PathVariable("pagenumber") Integer currentpage){
 		Page<Post> pageposts = prepository.findAll(PageRequest.of(currentpage-1,4));
 		Long totalitems = pageposts.getTotalElements();
@@ -65,59 +65,59 @@ public class PostController {
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("posts", pageposts);
-    	return "postlist";
+		return "postlist";
 	}
-  
-    //uudelleen ohjaa sivulle jossa voi tehdä postauksen
+
+	//uudelleen ohjaa sivulle jossa voi tehdä postauksen
 	//voidaan poistaa myöhemmin
 	//korvaava url /addcategorypost/{id}
-    @RequestMapping(value = "/addpost")
-    public String addPost(Model model){
-    	model.addAttribute("post", new Post());
-    	model.addAttribute("poststatuses", psrepository.findAll());
-        return "addpost";
-    }     
+	@RequestMapping(value = "/addpost")
+	public String addPost(Model model){
+		model.addAttribute("post", new Post());
+		model.addAttribute("poststatuses", psrepository.findAll());
+		return "addpost";
+	}
 
-    //voidaan poistaa myöhemmin
+	//voidaan poistaa myöhemmin
 	//korvaava url /category/{id}/posts
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String savePost(MultipartFile file, Post post, Model model) {
-    	if(!file.isEmpty()){
-            try {
-                String fileName = file.getOriginalFilename();
-                post.setImagename(fileName);
-                String dirLocation ="src\\main\\resources\\static\\temp\\";
-                if(!new File(dirLocation).exists()){
-                    File filea = new File(dirLocation);
-                    filea.mkdirs();
-                }
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(dirLocation+new File(fileName)));
-                bufferedOutputStream.write(bytes);
-                bufferedOutputStream.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    	prepository.save(post);
-    	model.addAttribute("post", post);
-        return "redirect:postlist";
-    }
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public String savePost(MultipartFile file, Post post, Model model) {
+		if(!file.isEmpty()){
+			try {
+				String fileName = file.getOriginalFilename();
+				post.setImagename(fileName);
+				String dirLocation ="src\\main\\resources\\static\\temp\\";
+				if(!new File(dirLocation).exists()){
+					File filea = new File(dirLocation);
+					filea.mkdirs();
+				}
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(dirLocation+new File(fileName)));
+				bufferedOutputStream.write(bytes);
+				bufferedOutputStream.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		prepository.save(post);
+		model.addAttribute("post", post);
+		return "redirect:postlist";
+	}
 
-    //poistetaan post olio
-    @RequestMapping(value = "/category/{categoryid}/deletepost/{postid}", method = RequestMethod.GET)
-    public String deletePost(@PathVariable("categoryid") Long categoryId, @PathVariable("postid") Long postId, Model model) {
-        Optional<Post> post = prepository.findById(postId);
-        Optional<Category> category = carepository.findById(categoryId);
-        category.get().getPosts().remove(post.get());
-    	prepository.deleteById(postId);
-        return "redirect:/category/view/{categoryid}/page/1";
-    }
-    
-    @RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
+	//poistetaan post olio
+	@RequestMapping(value = "/category/{categoryid}/deletepost/{postid}", method = RequestMethod.GET)
+	public String deletePost(@PathVariable("categoryid") Long categoryId, @PathVariable("postid") Long postId, Model model) {
+		Optional<Post> post = prepository.findById(postId);
+		Optional<Category> category = carepository.findById(categoryId);
+		category.get().getPosts().remove(post.get());
+		prepository.deleteById(postId);
+		return "redirect:/category/view/{categoryid}/page/1";
+	}
+
+	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
 	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, Model model) {
-    	Optional<Post> post = prepository.findById(postId);
-    	Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5));
+		Optional<Post> post = prepository.findById(postId);
+		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5));
 		Long totalitems = comments.getTotalElements();
 		Integer totalpages = comments.getTotalPages();
 		model.addAttribute("post", prepository.getPostById(postId));
@@ -131,10 +131,10 @@ public class PostController {
 		model.addAttribute("replies", rrepository.findAll());
 		model.addAttribute("categories", carepository.findAll());
 		return "viewpost";
-    }
-    // paginate posts by tag
-    @RequestMapping("/category/{categoryid}/page/{pagenumber}/tag/{id}")
-	public String posttag(@PathVariable("categoryid") Long categoryId, @PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+	}
+	// paginate posts by tag
+	@RequestMapping("/page/{pagenumber}/tag/{id}")
+	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
 		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
 		Long totalitems = posts.getTotalElements();
@@ -146,20 +146,19 @@ public class PostController {
 		model.addAttribute("tagid", tagId);
 		model.addAttribute("name", name);
 		model.addAttribute("posts", posts);
-        model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
-        model.addAttribute("categories", carepository.findAll());
-    	return "tagspostlist";
-    }
-    
-    @RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
+		model.addAttribute("categories", carepository.findAll());
+		return "tagspostlist";
+	}
+
+	@RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
 	public String postaddcomment(@PathVariable("id") Long id, @PathVariable("id") Long commentId, Model model, Comment comment) {
 		Optional<Post> post = prepository.findById(id);
-			if (!post.get().hasComment(comment)) {
+		if (!post.get().hasComment(comment)) {
 			post.get().getComments().add(comment);}
-			prepository.save(post.get());
-			model.addAttribute("post", prepository.findById(id));
-			model.addAttribute("comments", crepository.findAll());
-			return "redirect:/postlist/view/{id}/page/1";
+		prepository.save(post.get());
+		model.addAttribute("post", prepository.findById(id));
+		model.addAttribute("comments", crepository.findAll());
+		return "redirect:/postlist/view/{id}/page/1";
 	}
 
 	//voidaan poistaa kommentti olio
@@ -167,10 +166,10 @@ public class PostController {
 	public String deletecomment(@PathVariable("postid") Long id, @PathVariable("commentid") Long commentId) {
 		Optional<Comment> comment = crepository.findById(commentId);
 		Optional<Post> post = prepository.findById(id);
-			post.get().getComments().remove(comment.get());
-			crepository.deleteById(commentId);
-			return "redirect:/postlist/view/{postid}/page/1";
-		}
+		post.get().getComments().remove(comment.get());
+		crepository.deleteById(commentId);
+		return "redirect:/postlist/view/{postid}/page/1";
+	}
 
 	//voidaan poistaa reply olio
 	@RequestMapping(value="/{postid}/comment/{commentid}/deletereply/{replyid}", method=RequestMethod.GET)
@@ -183,30 +182,30 @@ public class PostController {
 	}
 
 
-    @RequestMapping(value="/{postid}/comment/{id}/replies", method=RequestMethod.GET)
+	@RequestMapping(value="/{postid}/comment/{id}/replies", method=RequestMethod.GET)
 	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("postid") Long id, Model model, Reply reply) {
 		Optional<Comment> comment = crepository.findById(commentId);
-			if (!comment.get().hasReply(reply)) {
+		if (!comment.get().hasReply(reply)) {
 			comment.get().getReplies().add(reply);}
-			crepository.save(comment.get());
-			model.addAttribute("comment", crepository.findById(commentId));
-			model.addAttribute("replies", rrepository.findAll());		
-			return "redirect:/postlist/view/{postid}/page/1";
+		crepository.save(comment.get());
+		model.addAttribute("comment", crepository.findById(commentId));
+		model.addAttribute("replies", rrepository.findAll());
+		return "redirect:/postlist/view/{postid}/page/1";
 	}
-    
-  //KESKEN!!!!!!!
-    @RequestMapping(value = "/{categoryid}/addPostTag/{id}", method = RequestMethod.GET)
-    public String addTagtopost(@PathVariable("id") Long postId, @PathVariable("categoryid") Long categoryId, Model model){
-    		model.addAttribute("tags", trepository.findAll());
-    		model.addAttribute("post", prepository.findById(postId).get());
-            model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
-    		return "addPostTag";
-    }
-    
-    //Kesken!!!!
-    @RequestMapping(value="/{categoryid}/post/{id}/tags", method=RequestMethod.GET)
+
+	//KESKEN!!!!!!!
+	@RequestMapping(value = "/{categoryid}/addPostTag/{id}", method = RequestMethod.GET)
+	public String addTagtopost(@PathVariable("id") Long postId, @PathVariable("categoryid") Long categoryId, Model model){
+		model.addAttribute("tags", trepository.findAll());
+		model.addAttribute("post", prepository.findById(postId).get());
+		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
+		return "addPostTag";
+	}
+
+	//Kesken!!!!
+	@RequestMapping(value="/{categoryid}/post/{id}/tags", method=RequestMethod.GET)
 	public String postAddTag(@RequestParam(value="action", required=true) String action, @PathVariable("id") Long id, @PathVariable("categoryid") Long categoryId, @RequestParam Long tagId, Model model) {
-    	Optional<Tag> tag = trepository.findById(tagId);
+		Optional<Tag> tag = trepository.findById(tagId);
 		Optional<Post> post = prepository.findById(id);
 
 		if (post.isPresent() && action.equalsIgnoreCase("save tag")) {
@@ -219,7 +218,7 @@ public class PostController {
 			return "redirect:/{categoryid}/addPostTag/{id}";
 		}
 		if (post.isPresent() && action.equalsIgnoreCase("remove tag")) {
-				post.get().getTags().remove(tag.get());
+			post.get().getTags().remove(tag.get());
 			prepository.save(post.get());
 			//korjaa jos mahdollista
 			model.addAttribute("post", prepository.findById(id));
@@ -227,24 +226,24 @@ public class PostController {
 			return "redirect:/{categoryid}/addPostTag/{id}";
 		}
 		return "redirect:/addPostTag/{id}";
-		
-	}    
+
+	}
 
 	//luodaan uusi tag olio
-    @RequestMapping(value = "/addtag")
-    public String addTag(Model model){
-    	model.addAttribute("tag", new Tag());
-        return "addtag";
-    }     
+	@RequestMapping(value = "/addtag")
+	public String addTag(Model model){
+		model.addAttribute("tag", new Tag());
+		return "addtag";
+	}
 
-    //tallennetaan luotu tag olio
-    @RequestMapping(value = "/savetag", method = RequestMethod.POST)
-    public String saveTag(Tag tag){
-        trepository.save(tag);
-        return "redirect:postlist";
-    }
+	//tallennetaan luotu tag olio
+	@RequestMapping(value = "/savetag", method = RequestMethod.POST)
+	public String saveTag(Tag tag){
+		trepository.save(tag);
+		return "redirect:/";
+	}
 
-    //functional search bar with pagination
+	//functional search bar with pagination
 	@RequestMapping(value = "/page/{pagenumber}/search", method = RequestMethod.GET)
 	public String search(Model model, @PathVariable("pagenumber") Integer currentpage, @RequestParam(defaultValue="") String searchby) {
 		//model.addAttribute("posts", prepository.findByTitleLike("%"+searchby+"%"));
@@ -259,24 +258,24 @@ public class PostController {
 		model.addAttribute("searchby", searchby);
 		model.addAttribute("posts", pageposts);
 
-        model.addAttribute("categories", carepository.findAll());
+		model.addAttribute("categories", carepository.findAll());
 		return "searchresults";
 	}
 
 	@RequestMapping(value = "/{categoryid}/editpost/{id}")
 	public String editpost(@PathVariable("id") Long postId, @PathVariable("categoryid") Long categoryId, Model model){
 		model.addAttribute("post", prepository.findById(postId));
-        model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
+		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
 		model.addAttribute("poststatuses", psrepository.findAll());
-    	return "editpost";
+		return "editpost";
 	}
 
 	//root
 	@RequestMapping(value = "/")
 	public String index(Model model){
-        model.addAttribute("links", lrepository.findAll());
+		model.addAttribute("links", lrepository.findAll());
 		model.addAttribute("categories", carepository.findAll());
-    	return "index";
+		return "index";
 	}
 
 	//luodaan rating olio
@@ -331,11 +330,11 @@ public class PostController {
 		return "redirect:/";
 	}
 
-    @RequestMapping(value = "/addcategory")
-    public String addCategory(Model model){
-        model.addAttribute("category", new Category());
-        return "addcategory";
-    }
+	@RequestMapping(value = "/addcategory")
+	public String addCategory(Model model){
+		model.addAttribute("category", new Category());
+		return "addcategory";
+	}
 
 	@RequestMapping(value = "/savecategory", method=RequestMethod.POST)
 	public String saveCategory(Category category) {
