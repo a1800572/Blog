@@ -273,6 +273,7 @@
         position: absolute;
         margin: 0px;
         padding: 0px;
+        z-index: 1;
     }
 
     nav ul li:hover{
@@ -469,4 +470,16 @@
         margin-bottom: 6px;
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
+    }
+
+    .sortcontainer {
+        right: 0;
+        margin-right: 20px;
+        margin-left: 20px;
+        width: 210px;
+        height: 300px;
+        background-color: darkgray;
+        box-shadow: 0 0 10px 1px darkgray;
+        border-radius: 2px;
+        position: absolute;
     }

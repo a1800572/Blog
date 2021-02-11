@@ -47,7 +47,8 @@
 <script type="text/javascript" th:src="@{/js/actions.js}"></script>
 
 <h1 th:text="'Search results for keyword: ' + ${searchby}"></h1>
-
+<div class="contentcontainer">
+<div class="sortcontainer"></div>
 <div class="postsbackground">
 <tr th:each = "post : ${posts}">
     <div class="container">
@@ -210,6 +211,7 @@
 </div>
 </div>
 <!--pagination end-->
+</div>
 </div>
 </body>
 </html>
