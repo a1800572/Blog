@@ -48,7 +48,9 @@
 
 <h1 th:text="'Search results for keyword: ' + ${searchby}"></h1>
 <div class="contentcontainer">
-<div class="sortcontainer"></div>
+<div class="sortcontainer">
+    <button class="sortbtn" href="">Sort and Filter</button>
+</div>
 <div class="postsbackground">
 <tr th:each = "post : ${posts}">
     <div class="container">

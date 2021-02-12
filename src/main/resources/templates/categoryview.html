@@ -51,7 +51,19 @@
 
 <a class="btn btn-success btn-sm" th:href="@{/addcategorypost/{id}(id=${category.categoryid})}">Add Category Post</a>
 <div class="contentcontainer">
-<div class="sortcontainer"></div>
+
+<div class="sortcontainer">
+    <form action="#" method="get" th:action="@{/category/view/{id}/page/1(sortField=${sortField}, id=${category.categoryid})}">
+    <button class="sortbtn">Sort and Filter</button>
+        <select class="sortselection" th:name="sortField">
+            <option th:value="default" th:text="Default"></option>
+            <option th:value="title" th:text="Title"></option>
+            <option th:value="creationdatetime" th:text="Date+' '+Posted"></option>
+            <option th:value="updatedatetime" th:text="Date+' '+Updated"></option>
+        </select>
+    </form>
+</div>
+
 <div class="postsbackground">
     <tr th:each = "post : ${posts}">
         <div class="container">
@@ -195,31 +207,31 @@
     <div class="paginationcenter">
         <div class="paginationposition">
             <!--working-->
-            <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/1(id=${category.categoryid})}" th:text=" First"></a>
+            <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/1(sortField=${sortField}, id=${category.categoryid})}" th:text=" First"></a>
             <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->
-            <a th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-1)}" th:text=" Previous"></a>
+            <a th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/{currentpage}(sortField=${sortField}, currentpage=${currentpage}-1, id=${category.categoryid})}" th:text=" Previous"></a>
             <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
             <!--...start -->
             <span th:if="${currentpage - 3 > 1}">
-		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-4, id=${category.categoryid})}" th:text="..."></a>
+		<a th:href="@{/category/view/{id}/page/{currentpage}(sortField=${sortField}, currentpage=${currentpage}-4, id=${category.categoryid})}" th:text="..."></a>
 		</span>
             <!--working-->
             <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
             <span th:if="${i > 0}">
-		<a th:if="${i != currentpage}" th:href="@{/category/view/{id}/page/{pagenumber}(pagenumber=${i}, id=${category.categoryid})}" th:text="${i}"></a>
+		<a th:if="${i != currentpage}" th:href="@{/category/view/{id}/page/{pagenumber}(sortField=${sortField}, pagenumber=${i}, id=${category.categoryid})}" th:text="${i}"></a>
             </span>
 		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
 		</span>
             <!--...last-->
             <span th:if="${currentpage + 3 < totalpages}">
-		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+4, id=${category.categoryid})}" th:text="..."></a>
+		<a th:href="@{/category/view/{id}/page/{currentpage}(sortField=${sortField}, currentpage=${currentpage}+4, id=${category.categoryid})}" th:text="..."></a>
 		</span>
             <!--working-->
-            <a th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+1, id=${category.categoryid})}" th:text=" Next"></a>
+            <a th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{currentpage}(sortField=${sortField}, currentpage=${currentpage}+1, id=${category.categoryid})}" th:text=" Next"></a>
             <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
             <!--working-->
-            <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{totalpages}(totalpages=${totalpages}, id=${category.categoryid})}" th:text=" Last"></a>
+            <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{totalpages}(sortField=${sortField}, totalpages=${totalpages}, id=${category.categoryid})}" th:text=" Last"></a>
             <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
         </div>
     </div>

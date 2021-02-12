@@ -12,6 +12,7 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -343,9 +344,21 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/category/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "sortField", defaultValue = "") String sortField, Model model) {
 		Optional<Category> category = carepository.findById(categoryId);
-		Page<Post> posts = prepository.findByCategories(category.get(), PageRequest.of(currentpage-1,4));
+		//sorting implementointi
+		//default sorting parametri on id
+		Sort sort = Sort.by("id");
+		if (sortField.equals("title")){
+			sort = Sort.by("title").ascending();
+		}
+		if (sortField.equals("creationdatetime")){
+			sort = Sort.by("creationdatetime").ascending();
+		}
+		if (sortField.equals("updatedatetime")){
+			sort = Sort.by("updatedatetime").descending();
+		}
+		Page<Post> posts = prepository.findByCategories(category.get(), PageRequest.of(currentpage-1,4, sort));
 		Long totalitems = posts.getTotalElements();
 		Integer totalpages = posts.getTotalPages();
 		model.addAttribute("category", carepository.getCategoryByCategoryid(categoryId));
@@ -353,6 +366,7 @@ public class PostController {
 		model.addAttribute("currentpage", currentpage);
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
+		model.addAttribute("sortField", sortField);
 		model.addAttribute("posts", posts);
 		return "categoryview";
 	}

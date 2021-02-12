@@ -483,3 +483,33 @@
         border-radius: 2px;
         position: absolute;
     }
+
+    .sortbtn {
+        background-color: grey;
+        border-radius: 3px;
+        border: 1px solid black;
+        color: black;
+        width: 175px;
+        padding: 5px;
+        text-align: center;
+        display: flex;
+        font-size: 100%;
+        margin: 10px auto;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sortbtn:hover {
+        box-shadow: 0 0 10px 1px black;
+    }
+
+    .sortselection {
+        width: 175px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        margin: 0 auto;
+        padding: 3px;
+    }
+
