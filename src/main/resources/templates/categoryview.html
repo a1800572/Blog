@@ -206,7 +206,10 @@
 
     <div class="paginationcenter">
         <div class="paginationposition">
-            <!--working-->
+
+            <!--jos on valinnut sorting parametrin tämä paginaatiometodi on käytössä-->
+            <!--url esimerkki http://localhost:8080/category/view/82/page/1?sortField=default -->
+            <span th:if="${sortField != ''}">
             <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/1(sortField=${sortField}, id=${category.categoryid})}" th:text=" First"></a>
             <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->
@@ -233,6 +236,40 @@
             <!--working-->
             <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{totalpages}(sortField=${sortField}, totalpages=${totalpages}, id=${category.categoryid})}" th:text=" Last"></a>
             <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+            </span>
+
+
+            <!--jos käyttäjä ei ole valinnut sorting parametria tämä paginaatiometodi on käytössä-->
+            <!--url esimerkki http://localhost:8080/category/view/82/page/1 -->
+            <!--sivua vaihtaessa parametri tuli automnaattisesti valituksi tämä korjaa kyseisen ongelman-->
+            <span th:if="${sortField == ''}">
+            <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/1(id=${category.categoryid})}" th:text=" First"></a>
+            <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
+                <!--working-->
+            <a th:if="${currentpage > 1}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-1, id=${category.categoryid})}" th:text=" Previous"></a>
+            <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
+                <!--...start -->
+            <span th:if="${currentpage - 3 > 1}">
+		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}-4, id=${category.categoryid})}" th:text="..."></a>
+		</span>
+                <!--working-->
+            <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
+            <span th:if="${i > 0}">
+		<a th:if="${i != currentpage}" th:href="@{/category/view/{id}/page/{pagenumber}(pagenumber=${i}, id=${category.categoryid})}" th:text="${i}"></a>
+            </span>
+		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+		</span>
+                <!--...last-->
+            <span th:if="${currentpage + 3 < totalpages}">
+		<a th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+4, id=${category.categoryid})}" th:text="..."></a>
+		</span>
+                <!--working-->
+            <a th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{currentpage}(currentpage=${currentpage}+1, id=${category.categoryid})}" th:text=" Next"></a>
+            <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
+                <!--working-->
+            <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/category/view/{id}/page/{totalpages}(totalpages=${totalpages}, id=${category.categoryid})}" th:text=" Last"></a>
+            <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+            </span>
         </div>
     </div>
     <!--pagination end-->
