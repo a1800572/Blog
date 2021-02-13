@@ -134,7 +134,7 @@ public class PostController {
 		return "viewpost";
 	}
 	// paginate posts by tag
-	@RequestMapping("/page/{pagenumber}/tag/{id}")
+	@RequestMapping("/tag/{id}/page/{pagenumber}")
 	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
 		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
@@ -344,18 +344,18 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/category/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "sortField", defaultValue = "") String sortField, Model model) {
+	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		Optional<Category> category = carepository.findById(categoryId);
 		//sorting implementointi
 		//default sorting parametri on id
 		Sort sort = Sort.by("id");
-		if (sortField.equals("title")){
+		if (srt.equals("title")){
 			sort = Sort.by("title").ascending();
 		}
-		if (sortField.equals("creationdatetime")){
+		if (srt.equals("creationdatetime")){
 			sort = Sort.by("creationdatetime").ascending();
 		}
-		if (sortField.equals("updatedatetime")){
+		if (srt.equals("updatedatetime")){
 			sort = Sort.by("updatedatetime").descending();
 		}
 		Page<Post> posts = prepository.findByCategories(category.get(), PageRequest.of(currentpage-1,4, sort));
@@ -366,7 +366,7 @@ public class PostController {
 		model.addAttribute("currentpage", currentpage);
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
-		model.addAttribute("sortField", sortField);
+		model.addAttribute("srt", srt);
 		model.addAttribute("posts", posts);
 		return "categoryview";
 	}
