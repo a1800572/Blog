@@ -258,20 +258,29 @@ public class PostController {
 	}
 
 	//functional search bar with pagination
-	@RequestMapping(value = "/page/{pagenumber}/search", method = RequestMethod.GET)
-	public String search(Model model, @PathVariable("pagenumber") Integer currentpage, @RequestParam(defaultValue="") String searchby) {
-		//model.addAttribute("posts", prepository.findByTitleLike("%"+searchby+"%"));
-		Page<Post> pageposts = prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%",PageRequest.of(currentpage-1,4));
-
+	@RequestMapping(value = "/page/{pagenumber}", method = RequestMethod.GET)
+	public String search(@PathVariable("pagenumber") Integer currentpage, @RequestParam(defaultValue="") String searchby, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
+		// sorting implementointi
+		//default sorting parametri on id
+		Sort sort = Sort.by("id");
+		if (srt.equals("title")){
+			sort = Sort.by("title").ascending();
+		}
+		if (srt.equals("creationdatetime")){
+			sort = Sort.by("creationdatetime").ascending();
+		}
+		if (srt.equals("updatedatetime")){
+			sort = Sort.by("updatedatetime").descending();
+		}
+		Page<Post> pageposts = prepository.findPostByTitleLikeOrDescriptionLikeOrContentLike("%"+searchby+"%", "%"+searchby+"%", "%"+searchby+"%",PageRequest.of(currentpage-1,4, sort));
 		Long totalitems = pageposts.getTotalElements();
 		Integer totalpages = pageposts.getTotalPages();
-
 		model.addAttribute("currentpage", currentpage);
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("searchby", searchby);
+		model.addAttribute("srt", srt);
 		model.addAttribute("posts", pageposts);
-
 		model.addAttribute("categories", carepository.findAll());
 		return "searchresults";
 	}
