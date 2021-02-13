@@ -49,9 +49,17 @@
 
 <h1 th:text="'All posts containing tag: ' + ${name}"></h1>
 <div class="contentcontainer">
-<div class="sortcontainer">
-    <button class="sortbtn" href="">Sort and Filter</button>
-</div>
+    <div class="sortcontainer">
+        <form action="#" method="get" th:action="@{/tag/{id}/page/1(srt=${srt}, id=${tagid})}">
+            <button class="sortbtn">Sort and Filter</button>
+            <select class="sortselection" th:name="srt">
+                <option th:value="default" th:text="Default"></option>
+                <option th:value="title" th:text="Title"></option>
+                <option th:value="creationdatetime" th:text="Date+' '+Posted"></option>
+                <option th:value="updatedatetime" th:text="Date+' '+Updated"></option>
+            </select>
+        </form>
+    </div>
 <div class="postsbackground">
     <tr th:each = "post : ${posts}">
         <div class="container">
@@ -176,7 +184,44 @@
     </div>
     <div class="paginationcenter">
         <div class="paginationposition">
+
+
+            <!--jos on valinnut sorting parametrin tämä paginaatiometodi on käytössä-->
+            <!--url esimerkki http://localhost:8080/tag/7/page/1?srt=default -->
+            <span th:if="${srt != ''}">
+            <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/tag/{id}/page/1(srt=${srt}, id=${tagid})}" th:text=" First"></a>
+            <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->
+            <a th:if="${currentpage > 1}" th:href="@{/tag/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}-1, id=${tagid})}" th:text=" Previous"></a>
+            <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
+            <!--...first-->
+            <span th:if="${currentpage - 3 > 1}">
+		    <a th:href="@{/tag/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}-4, id=${tagid})}" th:text="..."></a>
+	        </span>
+            <!--working-->
+            <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
+            <span th:if="${i > 0}">
+		    <a th:if="${i != currentpage}" th:href="@{/tag/{id}/page/{pagenumber}(srt=${srt}, pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
+            </span>
+		    <a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+	        </span>
+            <!--...last-->
+            <span th:if="${currentpage + 3 < totalpages}">
+		    <a th:href="@{/tag/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}+4, id=${tagid})}" th:text="..."></a>
+	        </span>
+            <!--working-->
+            <a th:if="${currentpage < totalpages}" th:href="@{/tag/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}+1, id=${tagid})}" th:text=" Next"></a>
+            <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
+            <!--working-->
+            <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/tag/{id}/page/{totalpages}(srt=${srt}, totalpages=${totalpages}, id=${tagid})}" th:text=" Last"></a>
+            <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+            </span>
+
+
+            <!--jos käyttäjä ei ole valinnut sorting parametria tämä paginaatiometodi on käytössä-->
+            <!--url esimerkki http://localhost:8080/tag/3/page/1 -->
+            <!--sivua vaihtaessa parametri tuli automnaattisesti valituksi tämä korjaa kyseisen ongelman-->
+            <span th:if="${srt == ''}">
             <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/tag/{id}/page/1(id=${tagid})}" th:text=" First"></a>
             <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->
@@ -184,25 +229,27 @@
             <a th:unless="${currentpage > 1}" th:text=" Previous"></a>
             <!--...first-->
             <span th:if="${currentpage - 3 > 1}">
-		<a th:href="@{/tag/{id}/page/{currentpage}(currentpage=${currentpage}-4, id=${tagid})}" th:text="..."></a>
-	</span>
+		    <a th:href="@{/tag/{id}/page/{currentpage}(currentpage=${currentpage}-4, id=${tagid})}" th:text="..."></a>
+	        </span>
             <!--working-->
             <span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
-        <span th:if="${i > 0}">
-		<a th:if="${i != currentpage}" th:href="@{/tag/{id}/page/{pagenumber}(pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
-        </span>
-		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
-	</span>
+            <span th:if="${i > 0}">
+		    <a th:if="${i != currentpage}" th:href="@{/tag/{id}/page/{pagenumber}(pagenumber=${i}, id=${tagid})}" th:text="${i}"></a>
+            </span>
+		    <a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+	        </span>
             <!--...last-->
             <span th:if="${currentpage + 3 < totalpages}">
-		<a th:href="@{/tag/{id}/page/{currentpage}(currentpage=${currentpage}+4, id=${tagid})}" th:text="..."></a>
-	</span>
+		    <a th:href="@{/tag/{id}/page/{currentpage}(currentpage=${currentpage}+4, id=${tagid})}" th:text="..."></a>
+	        </span>
             <!--working-->
             <a th:if="${currentpage < totalpages}" th:href="@{/tag/{id}/page/{currentpage}(currentpage=${currentpage}+1, id=${tagid})}" th:text=" Next"></a>
             <a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
             <!--working-->
             <a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/tag/{id}/page/{totalpages}(totalpages=${totalpages}, id=${tagid})}" th:text=" Last"></a>
             <a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+            </span>
+
         </div>
     </div>
     <!--pagination end-->

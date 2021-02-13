@@ -135,9 +135,21 @@ public class PostController {
 	}
 	// paginate posts by tag
 	@RequestMapping("/tag/{id}/page/{pagenumber}")
-	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
-		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4));
+		//sorting implementointi categoria näkymälle
+		//default sorting parametri on id
+		Sort sort = Sort.by("id");
+		if (srt.equals("title")){
+			sort = Sort.by("title").ascending();
+		}
+		if (srt.equals("creationdatetime")){
+			sort = Sort.by("creationdatetime").ascending();
+		}
+		if (srt.equals("updatedatetime")){
+			sort = Sort.by("updatedatetime").descending();
+		}
+		Page<Post> posts = prepository.findByTags(tag.get(), PageRequest.of(currentpage-1,4, sort));
 		Long totalitems = posts.getTotalElements();
 		Integer totalpages = posts.getTotalPages();
 		String name = tag.get().getName().toUpperCase();
@@ -146,6 +158,7 @@ public class PostController {
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("tagid", tagId);
 		model.addAttribute("name", name);
+		model.addAttribute("srt", srt);
 		model.addAttribute("posts", posts);
 		model.addAttribute("categories", carepository.findAll());
 		return "tagspostlist";
