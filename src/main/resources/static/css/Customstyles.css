@@ -170,33 +170,26 @@
         position: relative;
         margin: auto;
         width: 800px;
-
         background-color: #aeaaa2;
         padding: 5px;
         border-radius: 5px;
         border: 1px solid black;
     }
-    .commentreplybubble::after{
+    .commentreplybubble:after{
         content: "";
-        display: block;
         position: absolute;
         left:-19px;
         top:14px;
-        width: 0;
-        height: 0;
         border-top: 20px solid transparent;
         border-bottom: 0px solid transparent;
         border-right: 20px solid #aeaaa2;
     }
 
-    .commentreplybubble::before{
+    .commentreplybubble:before{
         content: "";
-        display: block;
         position: absolute;
         left:-20px;
         top:15px;
-        width: 0;
-        height: 0;
         border-top: 20px solid transparent;
         border-bottom: 0px solid transparent;
         border-right: 20px solid black;
@@ -234,7 +227,39 @@
         width: 750px;
     }
 
+    .divider {
+        border-top: 3px solid #ddd;
+        border-radius: 5px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 5px;
+    }
 
+    .nav2 {
+        width: 800px;
+        list-style-type: none;
+        margin: 10px auto;
+        padding: 0;
+        overflow: hidden;
+        border: 1px solid #e7e7e7;
+        background-color: #f3f3f3;
+    }
+
+    .nav2 li {
+        float: left;
+    }
+
+    .nav2 li a {
+        display: block;
+        color: #666;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .nav2 li a:hover {
+        background-color: #ddd;
+    }
 
 
 

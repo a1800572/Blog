@@ -47,7 +47,7 @@
 </div>
 
 <script type="text/javascript" th:src="@{/js/actions.js}"></script>
-
+			<div class="postsbackground">
 			<div class="postcontainer">
 			<h1>Post view</h1>
 			<h1 th:text="${post.id}"></h1>
@@ -68,6 +68,14 @@
 			<div style="clear: both; display: block; height: 5px;"></div>
 
 			<h1 id="commentsection">Comment section</h1>
+
+				<div class="divider"></div>
+				<ul class="nav2">
+					<li><a href="#Revelance">Revelance</a></li>
+					<li><a href="#New">New First</a></li>
+					<li><a href="#Old">Old First</a></li>
+				</ul>
+
 			<span th:each="comment,iterStat : ${comments}">
 			<div class="commentreplybubble">
 
@@ -157,7 +165,7 @@
 		<a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
 	</div>
 	</div>
-
+	</div>
 
 </body>
 </html>
