@@ -70,11 +70,11 @@
 			<h1 id="commentsection">Comment section</h1>
 
 				<div class="divider"></div>
-				<ul class="nav2">
-					<li><a href="#Revelance">Revelance</a></li>
-					<li><a href="#New">New First</a></li>
-					<li><a href="#Old">Old First</a></li>
-				</ul>
+				<form action="#" method="get" th:action="@{/postlist/view/{id}/page/1(srt=${srt}, id=${post.id})}">
+					<button th:name="srt" th:value="revelance">Revelance</button>
+					<button th:name="srt" th:value="new">New</button>
+					<button th:name="srt" th:value="old">Old</button>
+				</form>
 
 			<span th:each="comment,iterStat : ${comments}">
 			<div class="commentreplybubble">
@@ -136,7 +136,40 @@
 
 	<div class="paginationcenter">
 	<div class="paginationposition">
-		<!--working-->
+
+		<span th:if="${srt != ''}">
+		<a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/1(srt=${srt}, id=${post.id})}" th:text=" First"></a>
+		<a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
+			<!--working-->
+		<a th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}-1, id=${post.id})}" th:text=" Previous"></a>
+		<a th:unless="${currentpage > 1}" th:text=" Previous"></a>
+			<!--...prev page-->
+		<span th:if="${currentpage - 3 > 1}">
+		<a th:href="@{/postlist/view/{id}/page/{currentpage}(srt=${srt}, id=${post.id}, currentpage=${currentpage}-4)}" th:text="..."></a>
+		</span>
+			<!--working-->
+		<span th:each="i: ${#numbers.sequence(currentpage - 3, totalpages > 3 + currentpage ? currentpage + 3 : totalpages, 1)}">
+		<span th:if="${i > 0}">
+		<a th:if="${i != currentpage}" th:href="@{/postlist/view/{id}/page/{pagenumber}(srt=${srt}, pagenumber=${i}, id=${post.id})}" th:text="${i}"></a>
+		</span>
+		<a class="active" th:unless="${i != currentpage}" th:text="${i}"></a>
+		</span>
+			<!--...next page-->
+		<span th:if="${currentpage + 3 < totalpages}">
+		<a th:href="@{/postlist/view/{id}/page/{currentpage}(srt=${srt}, id=${post.id}, currentpage=${currentpage}+4)}" th:text="..."></a>
+		</span>
+			<!--working-->
+		<a th:if="${currentpage < totalpages}" th:href="@{/postlist/view/{id}/page/{currentpage}(srt=${srt}, currentpage=${currentpage}+1, id=${post.id})}" th:text=" Next"></a>
+		<a th:unless="${currentpage < totalpages}" th:text=" Next"></a>
+			<!--working-->
+		<a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/postlist/view/{id}/page/{totalpages}(srt=${srt}, totalpages=${totalpages}, id=${post.id})}" th:text=" Last"></a>
+		<a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+		</span>
+
+
+
+
+		<span th:if="${srt == ''}">
 		<a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}" th:text=" First"></a>
 		<a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
 		<!--working-->
@@ -163,6 +196,7 @@
 		<!--working-->
 		<a class="paginationlast" th:if="${currentpage < totalpages}" th:href="@{/postlist/view/{id}/page/{totalpages}(totalpages=${totalpages}, id=${post.id})}" th:text=" Last"></a>
 		<a class="paginationlast" th:unless="${currentpage < totalpages}" th:text=" Last"></a>
+		</span>
 	</div>
 	</div>
 	</div>

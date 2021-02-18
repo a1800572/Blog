@@ -116,9 +116,16 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, Model model) {
+	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		Optional<Post> post = prepository.findById(postId);
-		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5));
+		Sort sort = Sort.by("commentid");
+		if (srt.equals("new")){
+			sort = Sort.by("creationdatetime").ascending();
+		}
+		if (srt.equals("old")){
+			sort = Sort.by("creationdatetime").descending();
+		}
+		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5, sort));
 		Long totalitems = comments.getTotalElements();
 		Integer totalpages = comments.getTotalPages();
 		model.addAttribute("post", prepository.getPostById(postId));
@@ -128,7 +135,7 @@ public class PostController {
 		model.addAttribute("totalpages", totalpages);
 		model.addAttribute("totalitems", totalitems);
 		model.addAttribute("comments", comments);
-
+		model.addAttribute("srt", srt);
 		model.addAttribute("replies", rrepository.findAll());
 		model.addAttribute("categories", carepository.findAll());
 		return "viewpost";
