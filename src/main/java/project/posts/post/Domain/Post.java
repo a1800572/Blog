@@ -21,6 +21,7 @@ public class Post {
     private String title;
     private String description;
     private String content;
+    private int views;
 
     @Lob
     private byte[] image;
@@ -180,6 +181,14 @@ public class Post {
 
 	public void setCreationdatetime(LocalDateTime creationdatetime) {
 		this.creationdatetime = creationdatetime;
+	}
+
+	public int getViews() {
+		return views;
+	}
+
+	public void setViews(int views) {
+		this.views = views;
 	}
 
 	public List<Category> getCategories() {

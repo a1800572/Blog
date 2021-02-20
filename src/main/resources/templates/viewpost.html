@@ -70,10 +70,10 @@
 			<h1 id="commentsection">Comment section</h1>
 
 				<div class="divider"></div>
-				<form action="#" method="get" th:action="@{/postlist/view/{id}/page/1(srt=${srt}, id=${post.id})}">
-					<button th:name="srt" th:value="revelance">Revelance</button>
-					<button th:name="srt" th:value="new">New</button>
-					<button th:name="srt" th:value="old">Old</button>
+				<form class="srtnav" action="#" method="get" th:action="@{/postlist/view/{id}/page/1(srt=${srt}, id=${post.id})}">
+					<button class="srtnavbutton" th:name="srt" th:value="revelance">Revelance</button>
+					<button class="srtnavbutton" th:name="srt" th:value="new">New Comments</button>
+					<button class="srtnavbutton" th:name="srt" th:value="old">Old Comments</button>
 				</form>
 
 			<span th:each="comment,iterStat : ${comments}">

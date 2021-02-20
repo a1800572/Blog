@@ -125,6 +125,10 @@ public class PostController {
 		if (srt.equals("old")){
 			sort = Sort.by("creationdatetime").descending();
 		}
+		//postauksen katsojamäärän seuraaminen
+			post.get().setViews(post.get().getViews() + 1);
+			prepository.save(post.get());
+
 		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5, sort));
 		Long totalitems = comments.getTotalElements();
 		Integer totalpages = comments.getTotalPages();

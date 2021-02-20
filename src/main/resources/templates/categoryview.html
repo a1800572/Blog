@@ -106,6 +106,7 @@
                 <p class="text" th:text="${post.content}"></p>
                 <p class="text" th:text="${post.imagename}"></p>
                 <p class="text" th:text="${post.poststatus.status}"></p>
+                <p class="text" th:text="${post.views} + ' ' + 'Post views' "></p>
             </div>
 
             <span th:if="${#aggregates.avg(post.ratings.![star])<1}">
