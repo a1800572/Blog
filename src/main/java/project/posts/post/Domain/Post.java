@@ -21,7 +21,6 @@ public class Post {
     private String title;
     private String description;
     private String content;
-    private int views;
 
     @Lob
     private byte[] image;
@@ -72,7 +71,17 @@ public class Post {
 
 	@ManyToMany(mappedBy = "posts")
 	private List<Category> categories = new ArrayList<>();
-    
+
+	@ManyToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE
+	})
+	@JoinTable(name = "post_viewer",
+			joinColumns = @JoinColumn(name = "id"),
+			inverseJoinColumns = @JoinColumn(name = "viewerid")
+	)
+	private List<Viewer> viewers = new ArrayList<>();
+
 
     public Post() {}
 
@@ -183,20 +192,20 @@ public class Post {
 		this.creationdatetime = creationdatetime;
 	}
 
-	public int getViews() {
-		return views;
-	}
-
-	public void setViews(int views) {
-		this.views = views;
-	}
-
 	public List<Category> getCategories() {
 		return categories;
 	}
 
 	public void setCategories(List<Category> categories) {
 		this.categories = categories;
+	}
+
+	public List<Viewer> getViewers() {
+		return viewers;
+	}
+
+	public void setViewers(List<Viewer> viewers) {
+		this.viewers = viewers;
 	}
 
 	public boolean hasComment(Comment comment) {
@@ -223,5 +232,14 @@ public class Post {
         }
         return false;
     }
+
+	public boolean hasViewer(Viewer viewer) {
+		for (Viewer postViewer: getViewers()) {
+			if (postViewer.getViewerid() == viewer.getViewerid()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import project.posts.post.Domain.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
 public class PostController {
@@ -46,6 +48,10 @@ public class PostController {
 
 	@Autowired
 	private CategoryRepository carepository;
+
+	@Autowired
+    private HttpServletRequest request;
+
 
 	//näyttää kaikki postaukset ekalla sivulla
 	@RequestMapping(value="/postlist")
@@ -116,7 +122,7 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
+	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Viewer viewer, Model model) {
 		Optional<Post> post = prepository.findById(postId);
 		Sort sort = Sort.by("commentid");
 		if (srt.equals("new")){
@@ -125,10 +131,12 @@ public class PostController {
 		if (srt.equals("old")){
 			sort = Sort.by("creationdatetime").descending();
 		}
-		//postauksen katsojamäärän seuraaminen
-			post.get().setViews(post.get().getViews() + 1);
-			prepository.save(post.get());
-
+        if (!post.get().hasViewer(viewer)) {
+            post.get().getViewers().add(viewer);
+            String ip = request.getRemoteAddr();
+            viewer.setIpadress(ip);
+        }
+        prepository.save(post.get());
 		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5, sort));
 		Long totalitems = comments.getTotalElements();
 		Integer totalpages = comments.getTotalPages();
