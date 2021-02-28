@@ -86,6 +86,7 @@
             <p class="text" th:text="${post.content}"></p>
             <p class="text" th:text="${post.imagename}"></p>
             <p class="text" th:text="${post.poststatus.status}"></p>
+            <p class="text" th:text="${'this post has: ' + #lists.size(post.viewers) + ' views'}"></p>
         </div>
 
 

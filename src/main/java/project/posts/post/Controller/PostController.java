@@ -133,10 +133,10 @@ public class PostController {
 		}
         if (!post.get().hasViewer(viewer)) {
             post.get().getViewers().add(viewer);
-            String ip = request.getRemoteAddr();
-            viewer.setIpadress(ip);
+            viewer.setIpadress(request.getRemoteAddr());
+            prepository.save(post.get());
         }
-        prepository.save(post.get());
+
 		Page<Comment> comments = crepository.findByPosts(post.get(), PageRequest.of(currentpage-1,5, sort));
 		Long totalitems = comments.getTotalElements();
 		Integer totalpages = comments.getTotalPages();
