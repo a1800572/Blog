@@ -136,17 +136,17 @@ public class PostController {
 			sort = Sort.by("creationdatetime").descending();
 		}
         if (!post.get().hasViewer(viewer)) {
-            File countrydatabase = new File("src\\main\\resources\\GeoLite2-City.mmdb");
-            DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
+            post.get().getViewers().add(viewer);
 			String ip = request.getRemoteAddr();
 
+			File countrydatabase = new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"GeoLite2-City.mmdb");
+			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			CityResponse response = dbReader.city(ipAddress);
 			String country = response.getCountry().getName();
 
             viewer.setIpadress(ip);
             viewer.setLocation(country);
-            post.get().getViewers().add(viewer);
             prepository.save(post.get());
         }
 
