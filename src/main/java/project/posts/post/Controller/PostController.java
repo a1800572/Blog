@@ -139,7 +139,7 @@ public class PostController {
             post.get().getViewers().add(viewer);
 			String ip = request.getRemoteAddr();
 
-			File countrydatabase = new File("src\\main\\resources\\maxmind\\GeoLite2-City\\GeoLite2-City.mmdb");
+			File countrydatabase = new File("src\\main\\resources\\maxmind\\GeoLite2-City.mmdb");
 			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			CityResponse response = dbReader.city(ipAddress);
