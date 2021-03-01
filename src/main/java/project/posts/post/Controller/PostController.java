@@ -4,11 +4,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -122,7 +126,7 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Viewer viewer, Model model) {
+	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Viewer viewer, Model model) throws IOException, GeoIp2Exception {
 		Optional<Post> post = prepository.findById(postId);
 		Sort sort = Sort.by("commentid");
 		if (srt.equals("new")){
@@ -133,7 +137,16 @@ public class PostController {
 		}
         if (!post.get().hasViewer(viewer)) {
             post.get().getViewers().add(viewer);
-            viewer.setIpadress(request.getRemoteAddr());
+			String ip = request.getRemoteAddr();
+
+			File countrydatabase = new File("src\\main\\resources\\maxmind\\GeoLite2-City\\GeoLite2-City.mmdb");
+			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
+			InetAddress ipAddress = InetAddress.getByName(ip);
+			CityResponse response = dbReader.city(ipAddress);
+			String country = response.getCountry().getName();
+
+            viewer.setIpadress(ip);
+            viewer.setLocation(country);
             prepository.save(post.get());
         }
 
