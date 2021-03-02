@@ -14,19 +14,24 @@ public class Viewer {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long viewerid;
     private String ipadress;
-    private String location;
-
     @CreationTimestamp
     private LocalDateTime viewdate;
+    private String countryname;
+    private String isocode;
+    private String province;
+    private String provinceisocode;
+    private String cityname;
+    private String postalcode;
+
 
     @ManyToMany(mappedBy = "viewers")
     private List<Post> posts = new ArrayList<>();
 
     public Viewer() {}
 
-    public Viewer(String location) {
+    public Viewer(String countryname) {
         super();
-        this.location=location;
+        this.countryname=countryname;
     }
 
     public Long getViewerid() {
@@ -45,12 +50,52 @@ public class Viewer {
         this.ipadress = ipadress;
     }
 
-    public String getLocation() {
-        return location;
+    public String getCountryname() {
+        return countryname;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setCountryname(String countryname) {
+        this.countryname = countryname;
+    }
+
+    public String getIsocode() {
+        return isocode;
+    }
+
+    public void setIsocode(String isocode) {
+        this.isocode = isocode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getProvinceisocode() {
+        return provinceisocode;
+    }
+
+    public void setProvinceisocode(String provinceisocode) {
+        this.provinceisocode = provinceisocode;
+    }
+
+    public String getCityname() {
+        return cityname;
+    }
+
+    public void setCityname(String cityname) {
+        this.cityname = cityname;
+    }
+
+    public String getPostalcode() {
+        return postalcode;
+    }
+
+    public void setPostalcode(String postalcode) {
+        this.postalcode = postalcode;
     }
 
     public LocalDateTime getViewdate() {

@@ -143,10 +143,21 @@ public class PostController {
 			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
 			InetAddress ipAddress = InetAddress.getByName(ip);
 			CityResponse response = dbReader.city(ipAddress);
+
 			String country = response.getCountry().getName();
+			String isocode = response.getCountry().getIsoCode();
+			String province = response.getMostSpecificSubdivision().getName();
+			String provinceisocode = response.getMostSpecificSubdivision().getIsoCode();
+			String city = response.getCity().getName();
+			String postalcode = response.getPostal().getCode();
 
             viewer.setIpadress(ip);
-            viewer.setLocation(country);
+            viewer.setCountryname(country);
+            viewer.setIsocode(isocode);
+            viewer.setProvince(province);
+            viewer.setProvinceisocode(provinceisocode);
+            viewer.setCityname(city);
+            viewer.setPostalcode(postalcode);
             prepository.save(post.get());
         }
 
