@@ -138,7 +138,7 @@ public class PostController {
         if (!post.get().hasViewer(viewer)) {
             post.get().getViewers().add(viewer);
 			String ip = request.getRemoteAddr();
-
+			String deviceinfo = request.getHeader("User-Agent");
 			File countrydatabase = new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"GeoLite2-City.mmdb");
 			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
 			InetAddress ipAddress = InetAddress.getByName(ip);
@@ -150,6 +150,7 @@ public class PostController {
 			String provinceisocode = response.getMostSpecificSubdivision().getIsoCode();
 			String city = response.getCity().getName();
 			String postalcode = response.getPostal().getCode();
+			Boolean vpnstatus = response.getTraits().isAnonymousVpn();
 
             viewer.setIpadress(ip);
             viewer.setCountryname(country);
@@ -158,6 +159,10 @@ public class PostController {
             viewer.setProvinceisocode(provinceisocode);
             viewer.setCityname(city);
             viewer.setPostalcode(postalcode);
+            viewer.setVpnstatus(vpnstatus);
+            viewer.setDeviceinfo(deviceinfo);
+
+            dbReader.close();
             prepository.save(post.get());
         }
 

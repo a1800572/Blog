@@ -22,6 +22,8 @@ public class Viewer {
     private String provinceisocode;
     private String cityname;
     private String postalcode;
+    private Boolean vpnstatus;
+    private String deviceinfo;
 
 
     @ManyToMany(mappedBy = "viewers")
@@ -96,6 +98,22 @@ public class Viewer {
 
     public void setPostalcode(String postalcode) {
         this.postalcode = postalcode;
+    }
+
+    public Boolean getVpnstatus() {
+        return vpnstatus;
+    }
+
+    public void setVpnstatus(Boolean vpnstatus) {
+        this.vpnstatus = vpnstatus;
+    }
+
+    public String getDeviceinfo() {
+        return deviceinfo;
+    }
+
+    public void setDeviceinfo(String deviceinfo) {
+        this.deviceinfo = deviceinfo;
     }
 
     public LocalDateTime getViewdate() {
