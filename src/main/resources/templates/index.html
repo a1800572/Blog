@@ -28,7 +28,7 @@
         <li><a href="#">Categories</a>
             <ul>
                 <li th:each = "category : ${categories}">
-                    <a th:href="@{/category/view/{id}/page/1(id=${category.categoryid})}" th:text="${category.categoryname}"></a>
+                    <a th:href="@{/category/view/{id}(page=${1}, id=${category.categoryid})}" th:text="${category.categoryname}"></a>
                 </li>
             </ul>
         </li>
@@ -36,8 +36,8 @@
         <li>
             <a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
             <div id="myDropdown" class="dropdown-content" data-state="closed">
-                <form class="search" th:action="@{/page/1}" action="#" method="get">
-
+                <form class="search" th:action="@{/results}" action="#" method="get">
+                    <input type="hidden" name="page" th:value="${1}" />
                     <input type="text" class="searchinput" name="searchby" placeholder="Search by title or description" />
                     <input type="submit" value="Search" class="searchbtn"/>
 

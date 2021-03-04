@@ -122,7 +122,7 @@ public class PostController {
 		Optional<Category> category = carepository.findById(categoryId);
 		category.get().getPosts().remove(post.get());
 		prepository.deleteById(postId);
-		return "redirect:/category/view/{categoryid}/page/1";
+		return "redirect:/category/view/{categoryid}?page=1";
 	}
 
 	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
@@ -182,8 +182,8 @@ public class PostController {
 		return "viewpost";
 	}
 	// paginate posts by tag
-	@RequestMapping("/tag/{id}/page/{pagenumber}")
-	public String posttag(@PathVariable("id") Long tagId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
+	@RequestMapping("/tag/{id}")
+	public String posttag(@PathVariable("id") Long tagId, @RequestParam(value = "page", defaultValue = "") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		Optional<Tag> tag = trepository.findById(tagId);
 		//sorting implementointi categoria näkymälle
 		//default sorting parametri on id
@@ -306,8 +306,8 @@ public class PostController {
 	}
 
 	//functional search bar with pagination
-	@RequestMapping(value = "/page/{pagenumber}", method = RequestMethod.GET)
-	public String search(@PathVariable("pagenumber") Integer currentpage, @RequestParam(defaultValue="") String searchby, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
+	@RequestMapping(value = "/results", method = RequestMethod.GET)
+	public String search(@RequestParam(value = "page", defaultValue = "") Integer currentpage, @RequestParam(defaultValue="") String searchby, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		// sorting implementointi
 		//default sorting parametri on id
 		Sort sort = Sort.by("id");
@@ -367,7 +367,7 @@ public class PostController {
 		prepository.save(post.get());
 		model.addAttribute("post", prepository.findById(id));
 		model.addAttribute("ratings", rarepository.findAll());
-		return "redirect:/category/view/{categoryid}/page/1";
+		return "redirect:/category/view/{categoryid}?page=1";
 	}
 
 	//luodaan kinkki olio index sivulle
@@ -413,8 +413,8 @@ public class PostController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/category/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewcategory(@PathVariable("id") Long categoryId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
+	@RequestMapping(value = "/category/view/{id}", method = RequestMethod.GET)
+	public String Viewcategory(@PathVariable("id") Long categoryId, @RequestParam(value = "page", defaultValue = "") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Model model) {
 		Optional<Category> category = carepository.findById(categoryId);
 		//sorting implementointi
 		//default sorting parametri on id
@@ -481,7 +481,7 @@ public class PostController {
 
 		model.addAttribute("category", carepository.findById(categoryId));
 		model.addAttribute("posts", prepository.findAll());
-		return "redirect:/category/view/{id}/page/1";
+		return "redirect:/category/view/{id}?page=1";
 	}
 
 
