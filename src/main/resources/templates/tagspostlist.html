@@ -71,11 +71,11 @@
                     <th th:text="${post.updatedatetime.month}+' '+${post.updatedatetime.dayOfMonth}+' '+${post.updatedatetime.year}"></th>
                 </i>
 
-                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1(id=${post.id})}">
+                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}(page=${1}, id=${post.id})}">
                     <i class="fas fa-info-circle"> Post details</i>
                 </a>
 
-                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}/page/1#commentsection(id=${post.id})}">
+                <a class="btn btn-primary btn-sm" th:href="@{/postlist/view/{id}#commentsection(page=${1}, id=${post.id})}">
                     <i class="fas fa-comments" th:text="${' '+#lists.size(post.comments)+' Comments'}"></i>
                 </a>
 

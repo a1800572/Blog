@@ -125,8 +125,8 @@ public class PostController {
 		return "redirect:/category/view/{categoryid}?page=1";
 	}
 
-	@RequestMapping(value = "/postlist/view/{id}/page/{pagenumber}", method = RequestMethod.GET)
-	public String Viewpost(@PathVariable("id") Long postId, @PathVariable("pagenumber") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Viewer viewer, Model model) throws IOException, GeoIp2Exception {
+	@RequestMapping(value = "/postlist/view/{id}", method = RequestMethod.GET)
+	public String Viewpost(@PathVariable("id") Long postId, @RequestParam(value = "page", defaultValue = "") Integer currentpage, @RequestParam(value = "srt", defaultValue = "") String srt, Viewer viewer, Model model) throws IOException, GeoIp2Exception {
 		Optional<Post> post = prepository.findById(postId);
 		Sort sort = Sort.by("commentid");
 		if (srt.equals("new")){
@@ -137,7 +137,8 @@ public class PostController {
 		}
         if (!post.get().hasViewer(viewer)) {
             post.get().getViewers().add(viewer);
-			String ip = request.getRemoteAddr();
+			//String ip = request.getRemoteAddr();
+            String ip ="88.113.233.20";
 			String deviceinfo = request.getHeader("User-Agent");
 			File countrydatabase = new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"GeoLite2-City.mmdb");
 			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
@@ -213,14 +214,14 @@ public class PostController {
 	}
 
 	@RequestMapping(value="/post/{id}/comments", method=RequestMethod.GET)
-	public String postaddcomment(@PathVariable("id") Long id, @PathVariable("id") Long commentId, Model model, Comment comment) {
+	public String postaddcomment(@PathVariable("id") Long id, Model model, Comment comment) {
 		Optional<Post> post = prepository.findById(id);
 		if (!post.get().hasComment(comment)) {
 			post.get().getComments().add(comment);}
 		prepository.save(post.get());
 		model.addAttribute("post", prepository.findById(id));
 		model.addAttribute("comments", crepository.findAll());
-		return "redirect:/postlist/view/{id}/page/1";
+		return "redirect:/postlist/view/{id}?page=1";
 	}
 
 	//voidaan poistaa kommentti olio
@@ -230,7 +231,7 @@ public class PostController {
 		Optional<Post> post = prepository.findById(id);
 		post.get().getComments().remove(comment.get());
 		crepository.deleteById(commentId);
-		return "redirect:/postlist/view/{postid}/page/1";
+		return "redirect:/postlist/view/{postid}?page=1";
 	}
 
 	//voidaan poistaa reply olio
@@ -240,10 +241,11 @@ public class PostController {
 		Optional<Reply> reply = rrepository.findById(replyId);
 		comment.get().getReplies().remove(reply.get());
 		rrepository.deleteById(replyId);
-		return "redirect:/postlist/view/{postid}/page/1";
+		return "redirect:/postlist/view/{postid}?page=1";
 	}
 
 
+	//lisätään reply olio
 	@RequestMapping(value="/{postid}/comment/{id}/replies", method=RequestMethod.GET)
 	public String commentaddreply(@PathVariable("id") Long commentId, @PathVariable("postid") Long id, Model model, Reply reply) {
 		Optional<Comment> comment = crepository.findById(commentId);
@@ -252,7 +254,7 @@ public class PostController {
 		crepository.save(comment.get());
 		model.addAttribute("comment", crepository.findById(commentId));
 		model.addAttribute("replies", rrepository.findAll());
-		return "redirect:/postlist/view/{postid}/page/1";
+		return "redirect:/postlist/view/{postid}?page=1";
 	}
 
 	//KESKEN!!!!!!!
