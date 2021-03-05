@@ -34,8 +34,8 @@
                 <a href="#" onclick="myFunction()" class="dropbtn" data-toggle="off"><i class="fa fa-search"></i> Search</a>
                 <div id="myDropdown" class="dropdown-content" data-state="closed">
                     <form class="search" th:action="@{/results}" action="#" method="get">
-                        <input type="hidden" name="page" th:value="${1}" />
-                        <input type="text" class="searchinput" name="searchby" placeholder="Search by title or description" />
+                        <input type="hidden" th:name="page" th:value="${1}" />
+                        <input type="text" class="searchinput" th:name="searchby" placeholder="Search by title or description" />
                         <input type="submit" value="Search" class="searchbtn"/>
 
                     </form>
@@ -191,6 +191,14 @@
             <!--jos on valinnut sorting parametrin tämä paginaatiometodi on käytössä-->
             <!--url esimerkki http://localhost:8080/tag/7/page/1?srt=default -->
             <span th:if="${srt != ''}">
+
+            <form th:action="@{/tag/{id}(id=${tagid})}" action="#" method="get">
+            <input type="value" th:name="page" placeholder="Jump to page" />
+            <input type="hidden" th:name="srt" th:value="${srt}" />
+            <input type="submit" value="Jump" />
+            <div style="clear: both; display: block; height: 10px;"></div>
+            </form>
+
             <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/tag/{id}(page=${1}, srt=${srt}, id=${tagid})}" th:text=" First"></a>
             <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->
@@ -224,6 +232,13 @@
             <!--url esimerkki http://localhost:8080/tag/3/page/1 -->
             <!--sivua vaihtaessa parametri tuli automnaattisesti valituksi tämä korjaa kyseisen ongelman-->
             <span th:if="${srt == ''}">
+
+            <form th:action="@{/tag/{id}(id=${tagid})}" action="#" method="get">
+            <input type="value" th:name="page" placeholder="Jump to page" />
+            <input type="submit" value="Jump" />
+            <div style="clear: both; display: block; height: 10px;"></div>
+            </form>
+
             <a class="paginationfirst" th:if="${currentpage > 1}" th:href="@{/tag/{id}(page=${1}, id=${tagid})}" th:text=" First"></a>
             <a class="paginationfirst" th:unless="${currentpage > 1}" th:text=" First"></a>
             <!--working-->

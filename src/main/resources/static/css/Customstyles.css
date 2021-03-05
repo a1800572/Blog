@@ -4,7 +4,7 @@
     border-radius: 10px;
     border: 2px solid red;
     padding: 3px;
-    width:1000px;
+    width:100%;
     margin-top: 5px;
     }
 
@@ -14,7 +14,7 @@
         background-color: white;
         box-shadow: 0 0 10px 1px darkgray;
         border-radius: 2px;
-        width: 1030px;
+        width: 950px;
         margin: 0 auto;
     }
 
