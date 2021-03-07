@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Contact Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link type="text/css"rel="stylesheet" href="css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+<h1>Contacty us</h1>
+<div>
+    <form th:object="${contact}" th:action="@{/savecontact}" action="#" method="post">
+        <label for="fullname">Fullname: </label>
+        <input type="text" id="fullname" th:field="*{fullname}" />
+        <div style="clear: both; display: block; height: 10px;"></div>
+        <label for="phonenumber">Phone number: </label>
+        <input type="text" id="phonenumber" th:field="*{phonenum}" />
+        <div style="clear: both; display: block; height: 10px;"></div>
+        <label for="email">Email: </label>
+        <input type="text" id="email" th:field="*{emailfrom}" />
+        <div style="clear: both; display: block; height: 10px;"></div>
+        <input type="submit" value="Save"></input>
+    </form>
+</div>
+</body>
+</html>

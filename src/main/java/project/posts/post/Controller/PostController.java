@@ -54,6 +54,9 @@ public class PostController {
 	private CategoryRepository carepository;
 
 	@Autowired
+	private ContactRepository corepository;
+
+	@Autowired
     private HttpServletRequest request;
 
 
@@ -484,6 +487,20 @@ public class PostController {
 		model.addAttribute("category", carepository.findById(categoryId));
 		model.addAttribute("posts", prepository.findAll());
 		return "redirect:/category/view/{id}?page=1";
+	}
+
+	//luodaan uusi contact olio
+    @RequestMapping(value = "/addcontact")
+    public String addcontact(Model model){
+        model.addAttribute("contact", new Contact());
+        return "contactform";
+    }
+
+    //tallennetaan contact olio tietokantaan
+	@RequestMapping(value = "/savecontact", method = RequestMethod.POST)
+	public String saveContact(Contact contact){
+		corepository.save(contact);
+		return "redirect:/";
 	}
 
 
