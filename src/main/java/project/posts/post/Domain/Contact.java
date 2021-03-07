@@ -11,14 +11,16 @@ public class Contact {
     private String fullname;
     private String phonenum;
     private String emailfrom;
+    private String message;
 
     public Contact() {}
 
-    public Contact(String fullname, String phonenum, String emailfrom) {
+    public Contact(String fullname, String phonenum, String emailfrom, String message) {
         super();
         this.fullname=fullname;
         this.phonenum=phonenum;
         this.emailfrom=emailfrom;
+        this.message=message;
     }
 
     public Long getContactid() {
@@ -51,5 +53,13 @@ public class Contact {
 
     public void setEmailfrom(String emailfrom) {
         this.emailfrom = emailfrom;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
