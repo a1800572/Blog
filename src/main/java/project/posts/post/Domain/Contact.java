@@ -11,15 +11,17 @@ public class Contact {
     private String fullname;
     private String phonenum;
     private String emailfrom;
+    private String subject;
     private String message;
 
     public Contact() {}
 
-    public Contact(String fullname, String phonenum, String emailfrom, String message) {
+    public Contact(String fullname, String phonenum, String emailfrom, String subject, String message) {
         super();
         this.fullname=fullname;
         this.phonenum=phonenum;
         this.emailfrom=emailfrom;
+        this.subject=subject;
         this.message=message;
     }
 
@@ -53,6 +55,14 @@ public class Contact {
 
     public void setEmailfrom(String emailfrom) {
         this.emailfrom = emailfrom;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public String getMessage() {
