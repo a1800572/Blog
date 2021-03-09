@@ -1,5 +1,6 @@
 package project.posts.post;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,7 @@ import project.posts.post.Domain.*;
 
 
 @SpringBootApplication
+@EnableEncryptableProperties
 public class PostApplication {
 	private static final Logger log = LoggerFactory.getLogger(PostApplication.class);
 
