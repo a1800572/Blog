@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -145,8 +146,8 @@ public class PostController {
 		}
         if (!post.get().hasViewer(viewer)) {
             post.get().getViewers().add(viewer);
-			//String ip = request.getRemoteAddr();
-            String ip ="88.113.233.20";
+			String ip = request.getRemoteAddr();
+            //String ip ="88.113.233.20";
 			String deviceinfo = request.getHeader("User-Agent");
 			File countrydatabase = new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"GeoLite2-City.mmdb");
 			DatabaseReader dbReader = new DatabaseReader.Builder(countrydatabase).build();
@@ -507,10 +508,11 @@ public class PostController {
 	public String saveContact(Contact contact){
 
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom(contact.getEmailfrom());
+
+		message.setFrom("ota.yhteytta1@hotmail.com");
 		message.setTo("valtteri.koivunen@hotmail.com");
 		message.setSubject(contact.getSubject());
-		message.setText(contact.getMessage());
+		message.setText("Fullname: "+contact.getFullname()+'\n'+"Telephone number: "+contact.getPhonenum()+'\n'+"Email address: "+contact.getEmailfrom()+'\n'+contact.getMessage());
 
 		corepository.save(contact);
 		mailSender.send(message);
